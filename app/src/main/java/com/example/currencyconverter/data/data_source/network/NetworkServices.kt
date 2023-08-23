@@ -36,5 +36,8 @@ interface NetworkServices {
         @Path("DAY") day: Int,
     ): CurrencyHistoricalDataModel
 
+    @GET("codes")
+    suspend fun getAllSupportedCodes()
+
 
 }
