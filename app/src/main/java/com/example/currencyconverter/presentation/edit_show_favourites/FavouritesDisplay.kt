@@ -46,7 +46,7 @@ fun FavouritesList(
     currenciesList: List<Currency>,
     onItemSelection: (Int, Boolean) -> Unit,
     onDialogCloseClick: () -> Unit,
-    onDismissRequest: () -> Unit,
+
 ) {
     Column(modifier = Modifier.padding(32.dp)) {
         Row(
@@ -113,7 +113,7 @@ fun FavouritesList(
         FavouriteCurrenciesSelectionDisplay(
             currenciesList = currenciesList,
             onDialogCloseClick = { onDialogCloseClick() },
-            onDismissRequest = { onDismissRequest() },
+
             onItemSelection = { id, state -> onItemSelection(id, state) })
     }
 

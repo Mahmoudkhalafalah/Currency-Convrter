@@ -36,7 +36,7 @@ class MainActivity : ComponentActivity() {
                             )
                         },
                         onDialogCloseClick = { favouritesViewModel.onDialogCloseClick() },
-                        onDismissRequest = { favouritesViewModel.onDialogDismissRequest() }
+
                     )
                 }
             }
