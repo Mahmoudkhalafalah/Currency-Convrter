@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
@@ -32,7 +31,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.currencyconverter.R
 
@@ -50,12 +48,13 @@ fun CurrencyDropDown(modifier: Modifier) {
     var selectedIndex by remember { mutableStateOf(0) }
     var selectedCurrency = currencies.getOrNull(selectedIndex)
 
-    Card(modifier=Modifier.width(230.dp)) {
-        Column(modifier = Modifier.clickable { isExpanded = !isExpanded }.background(color = Color.White)) {
+    Card(modifier = Modifier.wrapContentSize()) {
+        Column(modifier = Modifier.clickable { isExpanded = !isExpanded }.background(color = Color.White).wrapContentSize()
+       ) {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp).background(color = Color.White),
+                modifier = Modifier.wrapContentSize()
+                    .padding(16.dp).background(color = Color.White).
+                    border(border = BorderStroke(1.dp, color = Color.DarkGray), shape = RoundedCornerShape(20.dp)),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
@@ -77,6 +76,7 @@ fun CurrencyDropDown(modifier: Modifier) {
                         Text(text = selectedCurrency.currencyCode)
 
                     }
+                    Spacer(modifier = Modifier.width(55.dp))
                     Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = null)
                 }
 

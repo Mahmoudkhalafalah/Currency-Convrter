@@ -4,9 +4,13 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
@@ -46,11 +50,11 @@ fun Compare(){
         ) {
 
             Row(
-                modifier = Modifier.fillMaxWidth() , horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier.fillMaxWidth() ,
             ) {
                 Text(text = "Ammount",fontWeight = FontWeight(600),
                     color = Color(0xFF000000),fontSize = 14.sp,)
-
+                Spacer(modifier = Modifier.width(100.dp))
                 Text(text = "From",fontWeight = FontWeight(600),
                     color = Color(0xFF000000),fontSize = 14.sp,)
             }
@@ -72,7 +76,7 @@ fun Compare(){
                     keyboardOptions = KeyboardOptions.Default.copy(keyboardType = KeyboardType.Number),
                     singleLine = true,
                     modifier = Modifier
-                        .width(100.dp)
+                        .weight(1f).wrapContentSize()
                         .padding(16.dp)
                 )
                 CurrencyDropDown(Modifier.weight(1f))
@@ -92,9 +96,10 @@ fun Compare(){
 
 
 
-            Row(modifier = Modifier.fillMaxWidth() , horizontalArrangement = Arrangement.SpaceBetween) {
-                CurrencyDropDown(modifier = Modifier.weight(1f))
-                CurrencyDropDown(modifier = Modifier.weight(1f))
+            Row(modifier = Modifier.fillMaxWidth(), ) {
+                CurrencyDropDown(Modifier)
+                CurrencyDropDown(Modifier)
+
 
             }
             Row(modifier = Modifier.fillMaxWidth() , horizontalArrangement = Arrangement.SpaceBetween) {
