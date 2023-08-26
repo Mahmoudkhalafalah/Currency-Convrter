@@ -13,14 +13,8 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.BottomSheetState
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetLayout
-import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material.rememberBottomSheetState
-import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.Card
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
@@ -29,6 +23,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,11 +31,10 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.Dialog
 import com.example.currencyconverter.R
 import com.example.currencyconverter.domain.model.Currency
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavouriteCurrenciesSelectionDisplay(
     onDialogCloseClick: () -> Unit,
@@ -48,14 +42,13 @@ fun FavouriteCurrenciesSelectionDisplay(
     currenciesList: List<Currency>,
     onItemSelection: (Int, Boolean) -> Unit,
 ) {
-    val sheetState = androidx.compose.material3.rememberModalBottomSheetState()
-ModalBottomSheet(
-    sheetState = sheetState,
-    onDismissRequest = {
+    val sheetState = rememberModalBottomSheetState()
+    ModalBottomSheet(
+        sheetState = sheetState,
+        onDismissRequest = {
 
-    }
-) {
-
+        }
+    ) {
 
 
         Card(
@@ -84,11 +77,10 @@ ModalBottomSheet(
                     onItemSelection = { id, state -> onItemSelection(id, state) })
             }
         }
-}
-
-
     }
 
+
+}
 
 
 @Composable

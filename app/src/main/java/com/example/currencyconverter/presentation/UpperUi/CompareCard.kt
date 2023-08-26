@@ -1,4 +1,4 @@
-package com.example.currencyconverter.presentation.UpperUi
+package com.example.currencyconverter.presentation.upperUi
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement

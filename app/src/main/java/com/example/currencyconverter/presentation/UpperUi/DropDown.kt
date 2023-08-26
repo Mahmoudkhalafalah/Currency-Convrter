@@ -1,17 +1,22 @@
-package com.example.currencyconverter.presentation.UpperUi
+package com.example.currencyconverter.presentation.upperUi
 
 import androidx.annotation.DrawableRes
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material3.Card
@@ -31,7 +36,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.currencyconverter.R
 
-data class DropDownItem(val currencyCode: String, @DrawableRes val flagId: Int)
+/*data class DropDownItem(val currencyCode: String, @DrawableRes val flagId: Int)
 
 @Composable
 fun CurrencyDropDown(modifier: Modifier) {
@@ -57,7 +62,7 @@ fun CurrencyDropDown(modifier: Modifier) {
                 if (selectedCurrency != null) {
                 Row(
                     modifier = Modifier
-                        .padding(16.dp).background(color = Color.White),
+                        .background(color = Color.White),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Start
                 ) {
@@ -72,6 +77,78 @@ fun CurrencyDropDown(modifier: Modifier) {
                         Text(text = selectedCurrency.currencyCode)
 
                     }
+                    Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = null)
+                }
+
+                if (isExpanded) {
+                    currencies.forEachIndexed { index, dropDownItem ->
+                        DropdownMenuItem(
+                            onClick = {
+                                selectedIndex = index
+                                isExpanded = false
+                            },
+                            text = {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    Image(
+                                        painter = painterResource(id = dropDownItem.flagId),
+                                        contentDescription = null,
+                                        modifier = Modifier
+                                            .size(25.dp)
+                                            .padding(end = 8.dp)
+                                    )
+                                    Text(text = dropDownItem.currencyCode)
+                                }
+                            }
+                        )
+                    }
+                }
+            }
+        }
+    }
+}*/
+data class DropDownItem(val currencyCode: String, @DrawableRes val flagId: Int)
+
+@Composable
+fun CurrencyDropDown(modifier: Modifier) {
+    val currencies = listOf(
+        DropDownItem("USD", R.drawable.baseline_flag_circle_24),
+        DropDownItem("EUR", R.drawable.baseline_flag_circle_24),
+        DropDownItem("JPY", R.drawable.baseline_flag_24)
+    )
+
+    var isExpanded by remember { mutableStateOf(false) }
+    var selectedIndex by remember { mutableStateOf(0) }
+    var selectedCurrency = currencies.getOrNull(selectedIndex)
+
+    Card(modifier = Modifier.wrapContentSize()) {
+        Column(modifier = Modifier.clickable { isExpanded = !isExpanded }.background(color = Color.White).wrapContentSize()
+        ) {
+            Row(
+                modifier = Modifier.wrapContentSize()
+                    .padding(16.dp).background(color = Color.White).
+                    border(border = BorderStroke(1.dp, color = Color.DarkGray), shape = RoundedCornerShape(20.dp)),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                if (selectedCurrency != null) {
+                    Row(
+                        modifier = Modifier
+                            .padding(16.dp).background(color = Color.White),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.Start
+                    ) {
+
+                        Image(
+                            painter = painterResource(id = selectedCurrency.flagId),
+                            contentDescription = null,
+                            modifier = Modifier
+                                .size(25.dp)
+                                .padding(end = 8.dp)
+                        )
+                        Text(text = selectedCurrency.currencyCode)
+
+                    }
+                    Spacer(modifier = Modifier.width(55.dp))
                     Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = null)
                 }
 

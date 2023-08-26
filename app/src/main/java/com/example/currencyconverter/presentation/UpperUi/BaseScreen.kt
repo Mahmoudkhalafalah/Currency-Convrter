@@ -1,4 +1,4 @@
-package com.example.currencyconverter.presentation.UpperUi
+package com.example.currencyconverter.presentation.upperUi
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -7,166 +7,180 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.currencyconverter.R
-@Preview(showBackground = true)
+
+
 @Composable
-fun TopBar() {
-    var clicked: Boolean by rememberSaveable { mutableStateOf(true) }
-
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(color = Color.White)
-
-    ) {
-        Card(
+fun Main(
+    compareButtonClicked: Boolean,
+    onCompareButtonClick: () -> Unit,
+    convertButtonClicked: Boolean,
+    onConvertButtonClick: () -> Unit,
+) {
+    Column(modifier = Modifier.background(Color.White)) {
+        Box(
             modifier = Modifier
-                .fillMaxWidth(),
-            shape = RoundedCornerShape(0.dp),
+                .fillMaxWidth()
+                .fillMaxHeight(0.2715f)
 
-
-            ) {
-            Box(
+        ) {
+            ConstraintLayout(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .background(color = Color.White)
+                    .fillMaxSize()
+                    .align(Alignment.TopCenter)
             ) {
+                val (box, row,card) = createRefs()
 
-                Image(
-                    painter = painterResource(id = R.drawable.mainbackground),
-                    contentDescription = "null", modifier = Modifier.fillMaxWidth()
-                )
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxSize(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Row(
+                Box(modifier = Modifier.constrainAs(box) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                    bottom.linkTo(parent.bottom)
+                }) {
+                    Image(
+                        painter = painterResource(id = R.drawable.mainimage),
+                        contentDescription = "null",
                         modifier = Modifier
-                            .fillMaxWidth()
-                            .height(100.dp)
-                            .padding(16.dp),
-                        verticalAlignment = Alignment.CenterVertically,
-
-                        ) {
-                        Text(
-                            text = "Currency Converter",
-                            style = TextStyle(
-                                fontSize = 20.sp,
-                                fontWeight = FontWeight(600),
-                                color = Color(0xFFFFFFFF),
-                            )
-                        )
-
-                    }
-                    Spacer(modifier = Modifier.height(20.dp))
-
+                            .fillMaxSize()
+                            .fillMaxHeight()
+                    )
+                    Image(
+                        painter = painterResource(id = R.drawable.concurrencyimage),
+                        contentDescription = "",
+                        modifier = Modifier
+                            .align(Alignment.TopStart)
+                            .width(200.dp)
+                            .height(84.dp)
+                            .padding(top = 32.dp, start = 28.dp)
+                    )
                     Text(
                         text = "Currency Converter",
-                        fontSize = 20.sp,
-                        color = Color.White,
-                        style = MaterialTheme.typography.titleLarge
+                        modifier = Modifier
+                            .align(Alignment.Center)
+                            .padding(top = 32.dp),
+                        style = TextStyle(
+                            fontSize = 22.sp,
+                            fontFamily = FontFamily(Font(R.font.montserratmedium)),
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFFFFFFFF),
+                        )
                     )
                     Text(
-                        text = "Check live foreign curency exhange rates",
-                        fontSize = 15.sp,
-                        color = Color.White
+                        text = "Check live foreign currency exchange rates",
+                        modifier = Modifier
+                            .align(Alignment.BottomCenter)
+                            .padding(bottom = 64.dp),
+                        style = TextStyle(
+                            fontSize = 12.sp,
+                            fontFamily = FontFamily(Font(R.font.montserratthin)),
+                            fontWeight = FontWeight.Bold,
+                            color = Color(0xFFFFFFFF),
+                        )
                     )
-                    Spacer(modifier = Modifier.height(30.dp))
-                    Row(
-                        horizontalArrangement = Arrangement.spacedBy(
-                            10.026662826538086.dp,
-                            Alignment.CenterHorizontally
-                        ),
-                        verticalAlignment = Alignment.CenterVertically, modifier = Modifier
-                            .width(200.77539.dp)
-                            .height(54.06489.dp)
-                            .background(
-                                color = Color(0xFFF8F8F8),
-                                shape = RoundedCornerShape(size = 22.58325.dp)
-                            )
-                            .padding(
-                                start = 10.02666.dp,
-                                top = 10.02666.dp,
-                                end = 10.02666.dp,
-                                bottom = 10.02666.dp
-                            )
-
-                    ) {
-
-                        TextButton(onClick = {
-                            clicked=true
-                        }) {
-                            Text(
-                                text = "Convert", fontSize = 13.8.sp,
-                                fontWeight = FontWeight(400),
-                                color = Color(0xFF141414)
-                            )
-                        }
-                        TextButton(onClick = { clicked = false }) {
-                            Text(
-                                text = "Compare", fontSize = 13.8.sp,
-                                fontWeight = FontWeight(400),
-                                color = Color(0xFF141414)
-                            )
-
-                        }
-                    }
-       Box {
-           if (clicked ) {
-               CurrencyCard()
-           } else   {
-               //clicked2=false
-               Compare()
-
-           }
-       }
-
 
                 }
 
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(0.7f)
+                        .height(64.dp)
+                        .background(
+                            color = Color(0xFFF8F8F8),
+                            shape = RoundedCornerShape(28.dp)
+                        )
+                        .constrainAs(row) {
+                            top.linkTo(box.bottom)
+                            bottom.linkTo(box.bottom)
+                            start.linkTo(box.start)
+                            end.linkTo(box.end)
+                        },
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceEvenly
 
+                ) {
+                    TextButton(
+                        onClick = {
+                            onConvertButtonClick()
+                        }, modifier = if (convertButtonClicked) {
+                            Modifier
+                                .background(
+                                    color = Color.White,
+                                    shape = RoundedCornerShape(26.dp)
+                                )
+                                .padding(horizontal = 24.dp)
+
+                        } else Modifier.background(color = Color(0xFFF8F8F8))
+                    ) {
+                        Text(
+                            text = "Convert",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight(400),
+                            fontFamily = FontFamily(Font(R.font.poppins)),
+                            color = Color(0xFF141414),
+
+                            )
+                    }
+                    TextButton(
+                        onClick = { onCompareButtonClick() },
+                        modifier = if (compareButtonClicked) {
+                            Modifier
+                                .background(
+                                    color = Color.White,
+                                    shape = RoundedCornerShape(24.dp)
+                                )
+                                .padding(horizontal = 16.dp)
+                        } else Modifier.background(color = Color(0xFFF8F8F8))
+
+                    ) {
+
+                        Text(
+                            text = "Compare",
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight(400),
+                            fontFamily = FontFamily(Font(R.font.poppins)),
+                            color = Color(0xFF141414)
+                        )
+
+                    }
+                }
+            }
+
+        }
+        Spacer(modifier = Modifier.height(32.dp))
+        Box(modifier = Modifier.fillMaxHeight(0.7f).background(Color.White), contentAlignment = Alignment.TopCenter) {
+            if (compareButtonClicked) {
+                Compare()
+            }
+            if (convertButtonClicked) {
+                CurrencyCard()
             }
         }
+        Box(modifier = Modifier.fillMaxHeight(1f)){
 
-
-    }  
-
+        }
+    }
 }
-
-
 
 
 
