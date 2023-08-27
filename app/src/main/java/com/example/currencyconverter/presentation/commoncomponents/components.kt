@@ -4,17 +4,20 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
@@ -25,15 +28,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
@@ -43,7 +45,6 @@ import com.example.currencyconverter.R
 fun InputTextField(
     text: String,
     onTextChange: (String) -> Unit,
-    width: Dp,
     readOnly: Boolean = false,
 ) {
 
@@ -63,9 +64,8 @@ fun InputTextField(
                 color = Color(0xFFC5C5C5),
                 shape = RoundedCornerShape(size = 20.dp)
             )
-
-            .width(width)
             .height(54.dp)
+            .fillMaxWidth()
             .background(
                 color = Color(0xFFF9F9F9),
                 shape = RoundedCornerShape(size = 20.dp)
@@ -144,33 +144,31 @@ val currenciesList = listOf(
 )
 
 @Composable
-fun DropDownMenu(width: Dp) {
+fun DropDownMenu() {
 
     var isExpanded by remember { mutableStateOf(false) }
 
     var selectedCurrencyCode by remember { mutableStateOf("EGP") }
     var selectedCurrencyFlag by remember { mutableStateOf("https://cdn.britannica.com/85/185-004-1EA59040/Flag-Egypt.jpg") }
 
+    val icon = if (isExpanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .border(
-                width = 1.dp,
+                width = 0.5.dp,
                 color = Color(0xFFC5C5C5),
                 shape = RoundedCornerShape(size = 20.dp)
             )
             .padding(0.5.dp)
             .height(54.dp)
-            .width(width)
+            .fillMaxWidth()
             .background(color = Color(0xFFF9F9F9), shape = RoundedCornerShape(size = 20.dp))
             .clickable { isExpanded = isExpanded.not() }
     ) {
-        // The flag of the currency
         AsyncImage(
             model = selectedCurrencyFlag,
-            contentDescription = "currency flag",
-            /*placeholder = painterResource(id = R.drawable.placeholder),
-            error = painterResource(id = R.drawable.placeholder),*/
+            contentDescription = "flag",
             contentScale = ContentScale.FillBounds,
             modifier = Modifier
                 .padding(start = 11.dp)
@@ -181,8 +179,9 @@ fun DropDownMenu(width: Dp) {
         Text(
             text = selectedCurrencyCode,
             style = TextStyle(
-                fontSize = 16.sp,
-                fontWeight = FontWeight(400),
+                fontSize = 14.sp,
+                fontFamily = FontFamily(Font(R.font.poppins)),
+                fontWeight = FontWeight.ExtraLight,
                 color = Color.Black,
             ),
             modifier = Modifier
@@ -193,14 +192,13 @@ fun DropDownMenu(width: Dp) {
             onClick = { isExpanded = isExpanded.not() },
             modifier = Modifier
                 .padding(end = 16.dp)
-                .size(16.dp)
+                .size(32.dp)
         ) {
             Icon(
-                painter = painterResource(id = R.drawable.baseline_keyboard_arrow_down_24),
-                contentDescription = "Show all currencies",
+                imageVector = icon,
+                contentDescription = "spinner icon",
                 modifier = Modifier
-                    .padding(1.dp)
-                    .size(16.dp),
+                    .padding(1.dp),
                 tint = Color.Black
             )
         }
@@ -208,29 +206,29 @@ fun DropDownMenu(width: Dp) {
         DropdownMenu(
             expanded = isExpanded,
             modifier = Modifier
-                .height(250.dp)
-                .background(color = Color(0xFFF9F9F9)),
+                .height(200.dp)
+                .background(color = Color(0xFFF9F9F9))
+                .fillMaxWidth(0.47f)
+                .clip(RoundedCornerShape(16.dp)),
             onDismissRequest = { isExpanded = isExpanded.not() }
         ) {
-            repeat(currenciesList.size) {
+            currenciesList.forEach {
                 DropdownMenuItem(
                     text = {
                         Text(
-                            text = currenciesList[it].currencyCode,
+                            text = it.currencyCode,
                             style = TextStyle(
-                                fontSize = 16.sp,
-                                /*fontFamily = FontFamily(Font(R.font.open sans)),*/
-                                fontWeight = FontWeight(400),
-                                color = MaterialTheme.colorScheme.onPrimary
+                                fontSize = 14.sp,
+                                fontFamily = FontFamily(Font(R.font.poppins)),
+                                fontWeight = FontWeight.ExtraLight,
+                                color = Color.Black
                             )
                         )
                     },
                     leadingIcon = {
                         AsyncImage(
-                            model = currenciesList[it].currencyFlag,
-                            /*placeholder = painterResource(id = R.drawable.placeholder),
-                            error = painterResource(id = R.drawable.placeholder),*/
-                            contentDescription = "Currency Flag",
+                            model = it.currencyFlag,
+                            contentDescription = "flag",
                             modifier = Modifier
                                 .width(28.dp)
                                 .height(20.dp),
@@ -238,8 +236,8 @@ fun DropDownMenu(width: Dp) {
                         )
                     },
                     onClick = {
-                        selectedCurrencyCode = currenciesList[it].currencyCode
-                        selectedCurrencyFlag = currenciesList[it].currencyFlag
+                        selectedCurrencyCode = it.currencyCode
+                        selectedCurrencyFlag = it.currencyFlag
                         isExpanded = isExpanded.not()
                     }
                 )

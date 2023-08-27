@@ -128,7 +128,7 @@ fun FavouriteCurrenciesListDisplay(
 ) {
 
 
-    LazyColumn {
+    LazyColumn(modifier = Modifier.height(200.dp)) {
         items(favouriteCurrenciesList) {
             ListItem(
                 headlineContent = {
@@ -188,69 +188,3 @@ fun FavouriteCurrenciesListDisplay(
 
     }
 }
-
-
-/*
- Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 16.dp),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(
-                    modifier = Modifier.padding(bottom = 24.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-
-                    Image(
-                        painter = painterResource(id = R.drawable.united_states),
-                        contentDescription = it.currencyCode,
-                        modifier = Modifier
-                            .padding(end = 16.dp)
-                            .width(48.dp)
-                            .height(48.dp)
-                    )
-                    Column {
-                        Text(
-                            text = it.currencyCode, style = TextStyle(
-                                fontSize = 16.sp,
-                                lineHeight = 24.sp,
-                                fontFamily = FontFamily(Font(R.font.montserratthin)),
-                                fontWeight = FontWeight.Bold,
-                                color = Color(0xFF121212),
-                            )
-                        )
-                        Spacer(modifier = Modifier.height(3.dp))
-                        Text(
-                            text = "Currency",
-                            style = TextStyle(
-                                fontSize = 12.sp,
-                                lineHeight = 20.sp,
-                                fontFamily = FontFamily(Font(R.font.montserratthin)),
-                                fontWeight = FontWeight.Bold,
-                                color = Color(0xFFB8B8B8),
-                            )
-                        )
-                    }
-                }
-
-
-
-                Text(
-                    text = it.currencyRate.toString(),
-                    style = TextStyle(
-                        fontSize = 18.sp,
-                        lineHeight = 24.sp,
-                        fontFamily = FontFamily(Font(R.font.montserratmedium)),
-                        fontWeight = FontWeight(400),
-                        color = Color(0xFF121212)
-                    )
-                )
-
-
-            }
- */
-
-

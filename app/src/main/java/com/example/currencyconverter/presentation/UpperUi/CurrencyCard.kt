@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -44,7 +45,8 @@ fun CurrencyCard() {
         ) {
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.Start
+                horizontalAlignment = Alignment.Start,
+                modifier = Modifier.weight(1f)
             ) {
 
                 PoppinsFontText(
@@ -52,15 +54,18 @@ fun CurrencyCard() {
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
-                InputTextField(text = text, onTextChange = { text = it }, width = 121.dp)
+                InputTextField(text = text, onTextChange = { text = it })
             }
+            Spacer(modifier = Modifier.width(16.dp))
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.Start
+                horizontalAlignment = Alignment.Start,
+                modifier = Modifier.weight(1.5f)
             ) {
 
                 PoppinsFontText(text = "From")
-                DropDownMenu(184.dp)
+                DropDownMenu()
+                //DropDownMenuG()
             }
         }
         Spacer(modifier = Modifier.height(10.dp))
@@ -71,22 +76,24 @@ fun CurrencyCard() {
         ) {
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.Start
+                horizontalAlignment = Alignment.Start,
+                modifier = Modifier.weight(1.5f)
             ) {
                 PoppinsFontText(text = "To")
 
-                DropDownMenu(184.dp)
+                DropDownMenu()
             }
+            Spacer(modifier = Modifier.width(16.dp))
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
-                horizontalAlignment = Alignment.Start
+                horizontalAlignment = Alignment.Start,
+                modifier = Modifier.weight(1f)
             ) {
                 PoppinsFontText(text = "Amount", modifier = Modifier.padding(bottom = 16.dp))
 
                 InputTextField(
                     text = text2,
                     onTextChange = { text2 = it },
-                    width = 121.dp,
                     readOnly = true
                 )
             }
