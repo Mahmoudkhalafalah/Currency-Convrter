@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.currencyconverter.presentation.commoncomponents.DropDownMenu
 import com.example.currencyconverter.presentation.commoncomponents.InputTextField
 import com.example.currencyconverter.presentation.commoncomponents.PoppinsFontText
 
@@ -38,39 +39,47 @@ fun CurrencyCard() {
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.fillMaxWidth()
         ) {
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.Start
             ) {
-                PoppinsFontText(text = "Amount", modifier = Modifier.padding(bottom = 16.dp))
+
+                PoppinsFontText(
+                    text = "Amount",
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
+
                 InputTextField(text = text, onTextChange = { text = it }, width = 121.dp)
             }
             Column(
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.Start
             ) {
 
                 PoppinsFontText(text = "From")
-                CurrencyDropDown(
-                    modifier = Modifier.weight(1f)
-                )
-
+                DropDownMenu(184.dp)
             }
         }
         Spacer(modifier = Modifier.height(10.dp))
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.SpaceEvenly,
+            modifier = Modifier.fillMaxWidth()
         ) {
             Column(
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.Start
             ) {
                 PoppinsFontText(text = "To")
-                CurrencyDropDown(modifier = Modifier.weight(1f))
+
+                DropDownMenu(184.dp)
             }
             Column(
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.SpaceBetween,
+                horizontalAlignment = Alignment.Start
             ) {
                 PoppinsFontText(text = "Amount", modifier = Modifier.padding(bottom = 16.dp))
 
