@@ -1,4 +1,4 @@
-package com.example.currencyconverter.presentation.upperUi
+package com.example.currencyconverter.presentation.UpperUi
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -26,7 +25,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.currencyconverter.presentation.commoncomponents.InputTextField
 import com.example.currencyconverter.presentation.commoncomponents.PoppinsFontText
-
+import com.example.currencyconverter.presentation.dropDownMenu1
+import com.example.currencyconverter.presentation.upperUi.dropDownMenu
 
 
 @Preview(showBackground = true)
@@ -52,10 +52,11 @@ fun CurrencyCard() {
                 InputTextField(text = text, onTextChange = { text = it }, width = 121.dp)
             }
             Column(
-                verticalArrangement = Arrangement.Center
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
 
                 PoppinsFontText(text = "From")
+
                 dropDownMenu()
 
             }
@@ -63,7 +64,7 @@ fun CurrencyCard() {
         Spacer(modifier = Modifier.height(10.dp))
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
+            horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(
               Modifier.weight(1f),
@@ -71,7 +72,7 @@ fun CurrencyCard() {
 
             ) {
                 PoppinsFontText(text = "To")
-                dropDownMenu()
+                dropDownMenu1()
             }
             Column(
 
