@@ -39,9 +39,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.currencyconverter.R
+import com.example.currencyconverter.presentation.upperUi.Compare
+import com.example.currencyconverter.presentation.upperUi.CurrencyCard
+
 @Preview(showBackground = true)
 @Composable
-fun TopBar() {
+fun Main() {
     var clicked: Boolean by rememberSaveable { mutableStateOf(true) }
 
     Column(
@@ -64,7 +67,7 @@ fun TopBar() {
             ) {
 
                 Image(
-                    painter = painterResource(id = R.drawable.mainbackground),
+                    painter = painterResource(id = R.drawable.mainimage),
                     contentDescription = "null", modifier = Modifier.fillMaxWidth()
                 )
                 Column(

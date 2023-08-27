@@ -79,7 +79,7 @@ fun Compare(){
                         .weight(1f).wrapContentSize()
                         .padding(16.dp)
                 )
-                CurrencyDropDown(Modifier.weight(1f))
+                dropDownMenu()
 
 
             }
@@ -97,8 +97,8 @@ fun Compare(){
 
 
             Row(modifier = Modifier.fillMaxWidth(), ) {
-                CurrencyDropDown(Modifier)
-                CurrencyDropDown(Modifier)
+                dropDownMenu()
+                dropDownMenu()
 
 
             }

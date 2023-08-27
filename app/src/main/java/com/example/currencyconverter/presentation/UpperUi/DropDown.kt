@@ -18,10 +18,14 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Card
+import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -30,8 +34,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.toSize
 import com.example.currencyconverter.R
 
 /*data class DropDownItem(val currencyCode: String, @DrawableRes val flagId: Int)
@@ -108,74 +116,52 @@ fun CurrencyDropDown(modifier: Modifier) {
 }*/
 data class DropDownItem(val currencyCode: String, @DrawableRes val flagId: Int)
 
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Preview(showBackground = true)
 @Composable
-fun CurrencyDropDown(modifier: Modifier) {
-    val currencies = listOf(
-        DropDownItem("USD", R.drawable.baseline_flag_circle_24),
-        DropDownItem("EUR", R.drawable.baseline_flag_circle_24),
-        DropDownItem("JPY", R.drawable.baseline_flag_24)
-    )
+fun dropDownMenu() {
 
-    var isExpanded by remember { mutableStateOf(false) }
-    var selectedIndex by remember { mutableStateOf(0) }
-    var selectedCurrency = currencies.getOrNull(selectedIndex)
+    var expanded by remember { mutableStateOf(false) }
+    val suggestions = listOf("Kotlin", "Java", "Dart", "Python")
+    var selectedText by remember { mutableStateOf("") }
 
-    Card(modifier = Modifier.wrapContentSize()) {
-        Column(modifier = Modifier.clickable { isExpanded = !isExpanded }.background(color = Color.White).wrapContentSize()
+
+
+    val icon = if (expanded)
+        Icons.Filled.KeyboardArrowUp
+    else
+        Icons.Filled.KeyboardArrowDown
+
+
+    Column(Modifier.wrapContentSize().padding(16.dp).border(border = BorderStroke(1.dp, color = Color.DarkGray), shape = RoundedCornerShape(20.dp))) {
+        TextField(
+            value = selectedText,
+            onValueChange = { selectedText = it },
+            modifier = Modifier
+                .wrapContentSize()
+               , placeholder = { Text(text = "USD") },
+            shape = RoundedCornerShape(16.dp),
+            trailingIcon = {
+                Icon(icon,"contentDescription",
+                    Modifier.clickable { expanded = !expanded })
+            }
+        )
+        DropdownMenu(
+            expanded = expanded,
+            onDismissRequest = { expanded = false },
+
         ) {
-            Row(
-                modifier = Modifier.wrapContentSize()
-                    .padding(16.dp).background(color = Color.White).
-                    border(border = BorderStroke(1.dp, color = Color.DarkGray), shape = RoundedCornerShape(20.dp)),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                if (selectedCurrency != null) {
-                    Row(
-                        modifier = Modifier
-                            .padding(16.dp).background(color = Color.White),
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.Start
-                    ) {
+            suggestions.forEach { label ->
+                DropdownMenuItem({ Text(text = label) }
+                    ,onClick = {
+                        selectedText = label
+                        expanded = false
+                    })
 
-                        Image(
-                            painter = painterResource(id = selectedCurrency.flagId),
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(25.dp)
-                                .padding(end = 8.dp)
-                        )
-                        Text(text = selectedCurrency.currencyCode)
 
-                    }
-                    Spacer(modifier = Modifier.width(55.dp))
-                    Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = null)
-                }
-
-                if (isExpanded) {
-                    currencies.forEachIndexed { index, dropDownItem ->
-                        DropdownMenuItem(
-                            onClick = {
-                                selectedIndex = index
-                                isExpanded = false
-                            },
-                            text = {
-                                Row(verticalAlignment = Alignment.CenterVertically) {
-                                    Image(
-                                        painter = painterResource(id = dropDownItem.flagId),
-                                        contentDescription = null,
-                                        modifier = Modifier
-                                            .size(25.dp)
-                                            .padding(end = 8.dp)
-                                    )
-                                    Text(text = dropDownItem.currencyCode)
-                                }
-                            }
-                        )
-                    }
-                }
             }
         }
-    }
-}
 
+    }}
