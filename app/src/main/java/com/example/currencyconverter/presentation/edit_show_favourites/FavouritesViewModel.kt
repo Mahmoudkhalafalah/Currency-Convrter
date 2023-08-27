@@ -17,7 +17,6 @@ class FavouritesViewModel(
 ) : ViewModel() {
 
 
-
     private val _favouritesList =
         mutableStateOf<List<Currency>>(emptyList())
     val favouritesList = _favouritesList
@@ -40,11 +39,10 @@ class FavouritesViewModel(
         }
         updateFavouritesList()
     }
+
     private fun updateFavouritesList() {
         _favouritesList.value = getSelectedCurrencies.getSelectedCurrencies()
     }
-
-
 
 
     private fun updateCurrenciesList() {
@@ -56,12 +54,12 @@ class FavouritesViewModel(
         _dialogVisibility.value = true
     }
 
-    fun onDialogDismissRequest() {
+    fun onSheetDismissRequest() {
         updateFavouritesList()
         _dialogVisibility.value = false
     }
 
-    fun onDialogCloseClick() {
+    fun onCloseIconClick() {
         updateFavouritesList()
         _dialogVisibility.value = false
     }

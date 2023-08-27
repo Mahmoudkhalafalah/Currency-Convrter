@@ -12,5 +12,5 @@ data class ConversionRates(
     val HKD: Double,
     val INR: Double,
     val JPY: Double,
-    val KRW: Int
+    val KRW: Int,
 )

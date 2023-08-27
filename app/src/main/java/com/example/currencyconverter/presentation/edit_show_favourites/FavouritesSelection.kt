@@ -2,9 +2,7 @@ package com.example.currencyconverter.presentation.edit_show_favourites
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -16,11 +14,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
@@ -28,45 +30,47 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.currencyconverter.R
 import com.example.currencyconverter.domain.model.Currency
+import com.example.currencyconverter.presentation.commoncomponents.PoppinsFontText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavouriteCurrenciesSelectionDisplay(
-    onDialogCloseClick: () -> Unit,
-
+    onCloseIconClick: () -> Unit,
     currenciesList: List<Currency>,
     onItemSelection: (Int, Boolean) -> Unit,
+    onSheetDismissRequest: () -> Unit,
 ) {
     val sheetState = rememberModalBottomSheetState()
     ModalBottomSheet(
         sheetState = sheetState,
-        onDismissRequest = {
-
-        }
+        onDismissRequest = { onSheetDismissRequest() },
+        containerColor = Color.White
     ) {
-
-
         Card(
             modifier = Modifier
                 .fillMaxWidth(),
-
             shape = RoundedCornerShape(20.dp),
-
-
-            ) {
+            colors = CardDefaults.cardColors(Color.White)
+        ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .background(Color(0xFFF8F8F8))
+                    .background(Color.White)
                     .padding(16.dp),
             ) {
                 IconButton(
-                    onClick = { onDialogCloseClick() },
+                    onClick = { onCloseIconClick() },
                     modifier = Modifier.align(Alignment.End)
                 ) {
                     Icon(imageVector = Icons.Default.Clear, contentDescription = "")
@@ -89,51 +93,79 @@ fun FavouritesSelectionColumn(
     onItemSelection: (Int, Boolean) -> Unit,
 ) {
 
-    LazyColumn {
-        items(currenciesList) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Row(
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+    Column(
+        modifier = Modifier
+            .clip(shape = RoundedCornerShape(20.dp))
+            .background(Color(0xFFF8F8F8))
+    ) {
+        Spacer(modifier = Modifier.height(32.dp))
 
-                    Image(
-                        painter = painterResource(id = R.drawable.united_states/*it.flag*/),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .padding(end = 16.dp)
-                            .width(48.dp)
-                            .height(48.dp)
-                    )
-                    Column {
+        PoppinsFontText(
+            text = "My Favourites",
+            font = 18,
+            modifier = Modifier.padding(start = 16.dp)
+        )
+
+        LazyColumn(
+            modifier = Modifier
+                .background(Color(0xFFF8F8F8))
+                .padding(horizontal = 8.dp)
+        ) {
+            items(currenciesList) {
+                ListItem(
+                    headlineContent = {
                         Text(
-                            text = it.currencyCode, modifier = Modifier.padding(12.dp)
+                            text = "USD", style = TextStyle(
+                                fontSize = 16.sp,
+                                lineHeight = 24.sp,
+                                fontFamily = FontFamily(Font(R.font.poppins)),
+                                fontWeight = FontWeight.Light,
+                                color = Color(0xFF121212),
+                            )
                         )
-                        Spacer(modifier = Modifier.height(1.dp))
+                    },
+                    supportingContent = {
                         Text(
-                            text = "currency",
-                            color = Color.LightGray
+                            text = "Currency",
+                            style = TextStyle(
+                                fontSize = 14.sp,
+                                lineHeight = 20.sp,
+                                fontFamily = FontFamily(Font(R.font.poppins)),
+                                fontWeight = FontWeight.Thin,
+                                color = Color(0xFFB8B8B8),
+                            )
                         )
-                    }
-                }
-
-
-                Checkbox(
-                    checked = it.isSelected,
-                    onCheckedChange = { state -> onItemSelection(it.id, state) })
-
+                    },
+                    leadingContent = {
+                        Image(
+                            painter = painterResource(id = R.drawable.united_states),
+                            contentDescription = it.currencyCode,
+                            modifier = Modifier
+                                .padding(end = 8.dp)
+                                .width(44.dp)
+                                .height(44.dp)
+                        )
+                    },
+                    trailingContent = {
+                        Checkbox(
+                            checked = it.isSelected,
+                            onCheckedChange = { state -> onItemSelection(it.id, state) },
+                            colors = CheckboxDefaults.colors(
+                                checkedColor = Color.Black
+                            )
+                        )
+                    },
+                    colors = ListItemDefaults.colors((Color(0xFFF8F8F8)))
+                )
+                Divider(
+                    modifier = Modifier
+                        .height(1.dp)
+                        .alpha(0.3f)
+                )
             }
-            Divider(
-                modifier = Modifier
-                    .height(1.dp)
-                    .alpha(0.3f)
-            )
+
         }
     }
-
 }
+
+

@@ -23,7 +23,12 @@ import androidx.compose.ui.unit.sp
 import com.example.currencyconverter.R
 
 @Composable
-fun InputTextField(text: String, onTextChange: (String) -> Unit, width: Dp,readOnly :Boolean = false) {
+fun InputTextField(
+    text: String,
+    onTextChange: (String) -> Unit,
+    width: Dp,
+    readOnly: Boolean = false,
+) {
 
 
     OutlinedTextField(
@@ -57,11 +62,16 @@ fun InputTextField(text: String, onTextChange: (String) -> Unit, width: Dp,readO
 }
 
 @Composable
-fun PoppinsFontText(text: String, modifier: Modifier = Modifier,color: Color = Color.Black) {
+fun PoppinsFontText(
+    text: String,
+    modifier: Modifier = Modifier,
+    color: Color = Color.Black,
+    font: Int = 14,
+) {
     Text(
         text = text,
         style = TextStyle(
-            fontSize = 14.sp,
+            fontSize = font.sp,
             fontFamily = FontFamily(Font(R.font.poppins)),
             fontWeight = FontWeight.Bold,
             color = Color(0xFF000000),

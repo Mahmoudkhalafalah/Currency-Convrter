@@ -4,7 +4,7 @@ import com.example.currencyconverter.data.repository.Repository
 import com.example.currencyconverter.domain.model.Currency
 
 class GetAllCurrenciesUseCase(private val repository: Repository = Repository()) {
-    fun getAllCurrencies():List<Currency>{
+    fun getAllCurrencies(): List<Currency> {
         return repository.getAllCurrencies()
     }
 }

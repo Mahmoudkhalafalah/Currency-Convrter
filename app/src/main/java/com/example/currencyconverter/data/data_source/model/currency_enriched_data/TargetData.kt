@@ -6,5 +6,5 @@ data class TargetData(
     val display_symbol: String,
     val flag_url: String,
     val locale: String,
-    val two_letter_code: String
+    val two_letter_code: String,
 )

@@ -8,5 +8,5 @@ data class CurrencyHistoricalDataModel(
     val month: Int,
     val result: String,
     val terms_of_use: String,
-    val year: Int
+    val year: Int,
 )
