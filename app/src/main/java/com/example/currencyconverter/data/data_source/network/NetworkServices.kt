@@ -1,6 +1,7 @@
 package com.example.currencyconverter.data.data_source.network
 
 import com.example.currencyconverter.data.data_source.model.comparison.CurrenciesComparisonResponseModel
+import com.example.currencyconverter.data.data_source.model.currencies.SupportedCurrenciesResponseModel
 import com.example.currencyconverter.data.data_source.model.favourites.FavouriteCurrenciesRatesResponseModel
 import com.example.currencyconverter.data.data_source.model.pair_conversion.PairConversionResponseModel
 import retrofit2.http.Body
@@ -32,6 +33,6 @@ interface NetworkServices {
     ):FavouriteCurrenciesRatesResponseModel
 
     @GET("currencies")
-    suspend fun getAllSupportedCurrencies()
+    suspend fun getAllSupportedCurrencies():SupportedCurrenciesResponseModel
 
 }

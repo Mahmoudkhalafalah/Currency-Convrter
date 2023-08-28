@@ -4,7 +4,6 @@ package com.example.currencyconverter.presentation.edit_show_favourites
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -35,6 +34,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.currencyconverter.R
 import com.example.currencyconverter.domain.model.Currency
 
@@ -155,14 +155,20 @@ fun FavouriteCurrenciesListDisplay(
                     )
                 },
                 leadingContent = {
-                    Image(
+                    AsyncImage(
+                        model = it.flag, contentDescription = it.currencyCode, modifier = Modifier
+                            .padding(end = 8.dp)
+                            .width(48.dp)
+                            .height(48.dp)
+                    )
+                    /*Image(
                         painter = painterResource(id = R.drawable.united_states),
                         contentDescription = it.currencyCode,
                         modifier = Modifier
                             .padding(end = 8.dp)
                             .width(48.dp)
                             .height(48.dp)
-                    )
+                    )*/
                 },
                 trailingContent = {
                     Text(

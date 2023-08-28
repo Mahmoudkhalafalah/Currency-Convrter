@@ -22,10 +22,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -40,6 +36,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.currencyconverter.R
+import com.example.currencyconverter.data.data_source.model.currencies.Data
 
 @Composable
 fun InputTextField(
@@ -98,58 +95,19 @@ fun PoppinsFontText(
 
 }
 
-data class Currency(val currencyCode: String, val currencyName: String, val currencyFlag: String)
 
-val currenciesList = listOf(
-    Currency(
-        currencyCode = "EGP",
-        currencyName = "Egyptian Pound",
-        currencyFlag = "https://cdn.britannica.com/85/185-004-1EA59040/Flag-Egypt.jpg"
-    ),
-    Currency(
-        currencyCode = "USD",
-        currencyName = "US Dollar",
-        currencyFlag = "https://cdn.britannica.com/79/4479-050-6EF87027/flag-Stars-and-Stripes-May-1-1795.jpg"
-    ),
-    Currency(
-        currencyCode = "EUR",
-        currencyName = "Euro",
-        currencyFlag = "https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Flag_of_Europe.svg/2560px-Flag_of_Europe.svg.png"
-    ),
-    Currency(
-        currencyCode = "GBP",
-        currencyName = "Sterling Pound",
-        currencyFlag = "https://upload.wikimedia.org/wikipedia/commons/thumb/8/83/Flag_of_the_United_Kingdom_%283-5%29.svg/1280px-Flag_of_the_United_Kingdom_%283-5%29.svg.png"
-    ),
-    Currency(
-        currencyCode = "AED",
-        currencyName = "UAE Dirham",
-        currencyFlag = "https://upload.wikimedia.org/wikipedia/commons/thumb/c/cb/Flag_of_the_United_Arab_Emirates.svg/1280px-Flag_of_the_United_Arab_Emirates.svg.png"
-    ),
-    Currency(
-        currencyCode = "JPY",
-        currencyName = "Japan Yen",
-        currencyFlag = "https://upload.wikimedia.org/wikipedia/commons/thumb/9/9e/Flag_of_Japan.svg/1280px-Flag_of_Japan.svg.png"
-    ),
-    Currency(
-        currencyCode = "SAR",
-        currencyName = "Saudi Riyal",
-        currencyFlag = "https://cdn.britannica.com/79/5779-004-DC479508/Flag-Saudi-Arabia.jpg"
-    ),
-    Currency(
-        currencyCode = "KWD",
-        currencyName = "Kuwait Dinar",
-        currencyFlag = "https://cdn.britannica.com/70/5770-004-A99DD01D/Flag-Kuwait.jpg"
-    )
-)
 
 @Composable
-fun DropDownMenu() {
+fun DropDownMenu(
+    currenciesList: List<Data>,
+    isExpanded: Boolean,
+    selectedCurrencyCode: String,
+    selectedCurrencyFlag: String,
+    onDropDownIconClick:()->Unit,
+    onDropDownMenuDismissRequest:()->Unit,
+    onItemSelected:(String,String)->Unit
+) {
 
-    var isExpanded by remember { mutableStateOf(false) }
-
-    var selectedCurrencyCode by remember { mutableStateOf("EGP") }
-    var selectedCurrencyFlag by remember { mutableStateOf("https://cdn.britannica.com/85/185-004-1EA59040/Flag-Egypt.jpg") }
 
     val icon = if (isExpanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown
     Row(
@@ -164,7 +122,7 @@ fun DropDownMenu() {
             .height(54.dp)
             .fillMaxWidth()
             .background(color = Color(0xFFF9F9F9), shape = RoundedCornerShape(size = 20.dp))
-            .clickable { isExpanded = isExpanded.not() }
+            .clickable { onDropDownIconClick() }
     ) {
         AsyncImage(
             model = selectedCurrencyFlag,
@@ -189,7 +147,7 @@ fun DropDownMenu() {
                 .padding(start = 8.dp)
         )
         IconButton(
-            onClick = { isExpanded = isExpanded.not() },
+            onClick = { onDropDownIconClick() },
             modifier = Modifier
                 .padding(end = 16.dp)
                 .size(32.dp)
@@ -210,13 +168,13 @@ fun DropDownMenu() {
                 .background(color = Color(0xFFF9F9F9))
                 .fillMaxWidth(0.47f)
                 .clip(RoundedCornerShape(16.dp)),
-            onDismissRequest = { isExpanded = isExpanded.not() }
+            onDismissRequest = { onDropDownMenuDismissRequest() }
         ) {
             currenciesList.forEach {
                 DropdownMenuItem(
                     text = {
                         Text(
-                            text = it.currencyCode,
+                            text = it.code,
                             style = TextStyle(
                                 fontSize = 14.sp,
                                 fontFamily = FontFamily(Font(R.font.poppins)),
@@ -227,7 +185,7 @@ fun DropDownMenu() {
                     },
                     leadingIcon = {
                         AsyncImage(
-                            model = it.currencyFlag,
+                            model = it.flagUrl,
                             contentDescription = "flag",
                             modifier = Modifier
                                 .width(28.dp)
@@ -236,9 +194,8 @@ fun DropDownMenu() {
                         )
                     },
                     onClick = {
-                        selectedCurrencyCode = it.currencyCode
-                        selectedCurrencyFlag = it.currencyFlag
-                        isExpanded = isExpanded.not()
+                        onItemSelected(it.code,it.flagUrl)
+
                     }
                 )
             }

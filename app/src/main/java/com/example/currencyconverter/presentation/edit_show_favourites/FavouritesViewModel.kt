@@ -31,9 +31,10 @@ class FavouritesViewModel(
         repeat(10) {
             addCurrency.addCurrency(
                 Currency(
-                    flag = R.drawable.baseline_camera_alt_24,
+                    flag = "https://flagcdn.com/32x24/eu.png",
                     currencyCode = "EGP",
-                    currencyRate = 1.5
+                    currencyRate = 1.5,
+                    name = " "
                 )
             )
         }
@@ -45,12 +46,12 @@ class FavouritesViewModel(
     }
 
 
-    private fun updateCurrenciesList() {
+    /*private fun updateCurrenciesList() {
         _currenciesList.value = getAllCurrencies.getAllCurrencies()
-    }
+    }*/
 
     fun onAddFavouritesClick() {
-        updateCurrenciesList()
+        //updateCurrenciesList()
         _dialogVisibility.value = true
     }
 
@@ -66,7 +67,7 @@ class FavouritesViewModel(
 
     fun onItemSelect(state: Boolean, id: Int) {
         updateCurrency.updateCurrencySelectionState(state, id)
-        updateCurrenciesList()
+        //updateCurrenciesList()
     }
 
 

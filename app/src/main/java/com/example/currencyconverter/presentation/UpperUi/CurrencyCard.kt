@@ -14,6 +14,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,15 +24,31 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.currencyconverter.data.data_source.model.currencies.Data
 import com.example.currencyconverter.presentation.commoncomponents.DropDownMenu
 import com.example.currencyconverter.presentation.commoncomponents.InputTextField
 import com.example.currencyconverter.presentation.commoncomponents.PoppinsFontText
 
 
 @Composable
-fun CurrencyCard() {
-    var text by remember { mutableStateOf("") }
-    var text2 by remember { mutableStateOf("") }
+fun CurrencyCard(
+    currenciesList: List<Data>,
+    onConvertButtonClick: () -> Unit,
+    isToExpanded: Boolean,
+    toSelectedCurrencyCode: String,
+    toSelectedCurrencyFlag: String,
+    onToDropDownIconClick:()->Unit,
+    onDropDownMenuDismissRequest:()->Unit,
+    onToItemSelected:(String,String)->Unit,
+    isFromExpanded: Boolean,
+    fromSelectedCurrencyCode: String,
+    fromSelectedCurrencyFlag: String,
+    onFromDropDownIconClick:()->Unit,
+    onFromItemSelected:(String,String)->Unit,
+    amount: String,
+    convertedAmount:String,
+    onInputTextChange:(String)->Unit
+) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -54,7 +71,7 @@ fun CurrencyCard() {
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
 
-                InputTextField(text = text, onTextChange = { text = it })
+                InputTextField(text = amount, onTextChange = { onInputTextChange(it) })
             }
             Spacer(modifier = Modifier.width(16.dp))
             Column(
@@ -64,8 +81,15 @@ fun CurrencyCard() {
             ) {
 
                 PoppinsFontText(text = "From")
-                DropDownMenu()
-                //DropDownMenuG()
+                DropDownMenu(
+                    currenciesList = currenciesList,
+                    isExpanded = isFromExpanded,
+                    selectedCurrencyCode = fromSelectedCurrencyCode,
+                    selectedCurrencyFlag = fromSelectedCurrencyFlag,
+                    onDropDownIconClick = { onFromDropDownIconClick() },
+                    onDropDownMenuDismissRequest = { onDropDownMenuDismissRequest() },
+                    onItemSelected = {code,flag->onFromItemSelected(code,flag)}
+                )
             }
         }
         Spacer(modifier = Modifier.height(10.dp))
@@ -81,7 +105,15 @@ fun CurrencyCard() {
             ) {
                 PoppinsFontText(text = "To")
 
-                DropDownMenu()
+                DropDownMenu(
+                    currenciesList = currenciesList,
+                    isExpanded = isToExpanded,
+                    selectedCurrencyCode = toSelectedCurrencyCode,
+                    selectedCurrencyFlag = toSelectedCurrencyFlag,
+                    onDropDownIconClick = { onToDropDownIconClick() },
+                    onDropDownMenuDismissRequest = { onDropDownMenuDismissRequest() },
+                    onItemSelected = {code,flag->onToItemSelected(code,flag)}
+                )
             }
             Spacer(modifier = Modifier.width(16.dp))
             Column(
@@ -92,19 +124,13 @@ fun CurrencyCard() {
                 PoppinsFontText(text = "Amount", modifier = Modifier.padding(bottom = 16.dp))
 
                 InputTextField(
-                    text = text2,
-                    onTextChange = { text2 = it },
+                    text = convertedAmount,
+                    onTextChange = {},
                     readOnly = true
                 )
             }
         }
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(64.dp)
-        ) {
-
-        }
+        Spacer(modifier = Modifier.height(32.dp))
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceAround,
@@ -113,7 +139,7 @@ fun CurrencyCard() {
 
 
             Button(
-                onClick = { /*TODO*/ }, modifier = Modifier
+                onClick = { onConvertButtonClick() }, modifier = Modifier
                     .fillMaxWidth()
                     .height(48.dp),
                 shape = RoundedCornerShape(size = 20.dp),
