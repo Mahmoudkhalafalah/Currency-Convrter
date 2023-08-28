@@ -1,11 +1,20 @@
+@file:OptIn(ExperimentalAnimationApi::class)
+
 package com.example.currencyconverter.presentation.upperUi
 
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.with
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+
+
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -17,6 +26,10 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,6 +51,7 @@ fun Main(
     convertButtonClicked: Boolean,
     onConvertButtonClick: () -> Unit,
 ) {
+    var isVisable by remember { mutableStateOf(false) }
     Column(modifier = Modifier.background(Color.White)) {
         Box(
             modifier = Modifier
@@ -168,21 +182,47 @@ fun Main(
 
         }
         Spacer(modifier = Modifier.height(32.dp))
-        Box(modifier = Modifier.fillMaxHeight(0.7f).background(Color.White), contentAlignment = Alignment.TopCenter) {
-            if (compareButtonClicked) {
-                Compare()
-            }
-            if (convertButtonClicked) {
-                CurrencyCard()
-            }
+        Box(modifier = Modifier
+            .fillMaxHeight(0.7f)
+            .background(Color.White), contentAlignment = Alignment.TopCenter) {
+
+            var isVisable by remember { mutableStateOf(true) }
+            AnimatedContent(
+                targetState = compareButtonClicked,   modifier = Modifier
+                    .fillMaxWidth()
+                ,
+                content = {compareButtonClicked->
+
+                        if (compareButtonClicked) {
+
+                            Compare()
+
+                        }
+                        if(convertButtonClicked) {
+                            CurrencyCard()
+                        }
+
+                    }, transitionSpec = {
+                    slideInHorizontally (
+                        initialOffsetX = {
+                            if(compareButtonClicked) it else -it
+                        }
+                    ) with slideOutHorizontally(
+                        targetOffsetX = {
+                            if(compareButtonClicked) -it else it
+                        }
+                    )
+
+                }, label = ""
+            )
+        }
+
+
+
         }
         Box(modifier = Modifier.fillMaxHeight(1f)){
 
         }
     }
-}
-
-
-
 
 

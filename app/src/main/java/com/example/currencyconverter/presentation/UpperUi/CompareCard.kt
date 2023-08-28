@@ -75,7 +75,7 @@ fun Compare(){
                         .width(100.dp)
                         .padding(16.dp)
                 )
-                CurrencyDropDown(Modifier.weight(1f))
+               // CurrencyDropDown(Modifier.weight(1f))
 
 
             }
@@ -93,8 +93,8 @@ fun Compare(){
 
 
             Row(modifier = Modifier.fillMaxWidth() , horizontalArrangement = Arrangement.SpaceBetween) {
-                CurrencyDropDown(modifier = Modifier.weight(1f))
-                CurrencyDropDown(modifier = Modifier.weight(1f))
+               // CurrencyDropDown(modifier = Modifier.weight(1f))
+            //    CurrencyDropDown(modifier = Modifier.weight(1f))
 
             }
             Row(modifier = Modifier.fillMaxWidth() , horizontalArrangement = Arrangement.SpaceBetween) {

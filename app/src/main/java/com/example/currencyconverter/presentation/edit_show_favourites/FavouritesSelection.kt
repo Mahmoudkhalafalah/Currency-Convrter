@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -150,6 +151,7 @@ fun FavouritesSelectionColumn(
                         Checkbox(
                             checked = it.isSelected,
                             onCheckedChange = { state -> onItemSelection(it.id, state) },
+                            Modifier.size(24.dp).clip(RoundedCornerShape(.95f)),
                             colors = CheckboxDefaults.colors(
                                 checkedColor = Color.Black
                             )
