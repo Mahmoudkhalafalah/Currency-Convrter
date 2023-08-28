@@ -1,43 +1,35 @@
 package com.example.currencyconverter.data.data_source.network
 
-import com.example.currencyconverter.data.data_source.model.currency_enriched_data.CurrencyEnrichedDataModel
-import com.example.currencyconverter.data.data_source.model.currency_exchange.CurrencyExchangeModel
-import com.example.currencyconverter.data.data_source.model.currency_exchange_with_amount.CurrencyAmountExchangeModel
-import com.example.currencyconverter.data.data_source.model.currency_historical_data.CurrencyHistoricalDataModel
+import com.example.currencyconverter.data.data_source.model.comparison.ComparisonResponseModel
+import com.example.currencyconverter.data.data_source.model.pair_conversion.PairExchangeResponseModel
+import retrofit2.http.Body
 import retrofit2.http.GET
-import retrofit2.http.Path
+import retrofit2.http.POST
+import retrofit2.http.Query
 
 interface NetworkServices {
 
-    @GET("pair/{base}/{target}")
-    suspend fun getCurrencyRate(
-        @Path("base") baseCurrency: String,
-        @Path("target") targetCurrency: String,
-    ): CurrencyExchangeModel
+    @GET("/pair-conversion")
+    suspend fun getExchangeAmount(
+        @Query("base") base: String,
+        @Query("target") target: String,
+        @Query("amount") amount: Double,
+    ):
 
-    @GET("pair/{base}/{target}/{amount}")
-    suspend fun getCurrencyRateWithAmount(
-        @Path("base") baseCurrency: String,
-        @Path("target") targetCurrency: String,
-        @Path("amount") amount: Double,
-    ): CurrencyAmountExchangeModel
+    @GET("/comparison")
+    suspend fun getExchangeAmountComparison(
+        @Query("base") base: String,
+        @Query("target1") firstTarget: String,
+        @Query("target") secondTarget: String,
+        @Query("amount") amount: Double,
+    ): ComparisonResponseModel
 
-    @GET("enriched/{base}/{target}")
-    suspend fun getCurrencyEnrichedData(
-        @Path("base") baseCurrency: String,
-        @Path("target") targetCurrency: String,
-    ): CurrencyEnrichedDataModel
+    @POST("favorite-currencies")
+    suspend fun getFavouriteCurrenciesExchangeRate(
+        @Query("base") base: String,
+        @Body currenciesList: List<String>,
+    )
 
-    @GET("history/{base}/{YEAR}/{MONTH}/{DAY}")
-    suspend fun getCurrencyHistoricalData(
-        @Path("base") baseCurrency: String,
-        @Path("YEAR") year: Int,
-        @Path("MONTH") month: Int,
-        @Path("DAY") day: Int,
-    ): CurrencyHistoricalDataModel
-
-    @GET("codes")
-    suspend fun getAllSupportedCodes()
-
+    @GET("")
 
 }
