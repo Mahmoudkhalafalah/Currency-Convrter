@@ -22,11 +22,13 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -41,158 +43,185 @@ import com.example.currencyconverter.data.data_source.model.currencies.Data
 
 
 @Composable
-fun Main(
+fun Header(
     compareButtonClicked: Boolean,
-    onCompareButtonClick: () -> Unit,
+    onCompareToggleButtonClick: () -> Unit,
     convertButtonClicked: Boolean,
-    onConvertButtonClick: () -> Unit,
-    currenciesList: List<Data>,
-    convertButtonClick: () -> Unit,
-    isToExpanded: Boolean,
-    toSelectedCurrencyCode: String,
-    toSelectedCurrencyFlag: String,
-    onToDropDownIconClick: () -> Unit,
-    onDropDownMenuDismissRequest: () -> Unit,
-    onToItemSelected: (String, String) -> Unit,
-    isFromExpanded: Boolean,
-    fromSelectedCurrencyCode: String,
-    fromSelectedCurrencyFlag: String,
-    onFromDropDownIconClick: () -> Unit,
-    onFromItemSelected: (String, String) -> Unit,
-    amount: String,
-    convertedAmount:String,
-    onConvertInputTextChange:(String)->Unit
+    onConvertToggleButtonClick: () -> Unit,
 ) {
-    Column(modifier = Modifier.background(Color.White)) {
-        Box(
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .fillMaxHeight(0.2773f)
+
+    ) {
+        ConstraintLayout(
             modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.2715f)
-
+                .fillMaxSize()
+                .align(Alignment.TopCenter)
         ) {
-            ConstraintLayout(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .align(Alignment.TopCenter)
-            ) {
-                val (box, row, card) = createRefs()
+            val (box, row) = createRefs()
 
-                Box(modifier = Modifier.constrainAs(box) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                    bottom.linkTo(parent.bottom)
-                }) {
-                    Image(
-                        painter = painterResource(id = R.drawable.mainimage),
-                        contentDescription = "null",
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .fillMaxHeight()
-                    )
-                    Image(
-                        painter = painterResource(id = R.drawable.concurrencyimage),
-                        contentDescription = "",
-                        modifier = Modifier
-                            .align(Alignment.TopStart)
-                            .width(200.dp)
-                            .height(84.dp)
-                            .padding(top = 32.dp, start = 28.dp)
-                    )
-                    Text(
-                        text = "Currency Converter",
-                        modifier = Modifier
-                            .align(Alignment.Center)
-                            .padding(top = 32.dp),
-                        style = TextStyle(
-                            fontSize = 22.sp,
-                            fontFamily = FontFamily(Font(R.font.montserratmedium)),
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFFFFFFFF),
-                        )
-                    )
-                    Text(
-                        text = "Check live foreign currency exchange rates",
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                            .padding(bottom = 64.dp),
-                        style = TextStyle(
-                            fontSize = 12.sp,
-                            fontFamily = FontFamily(Font(R.font.montserratthin)),
-                            fontWeight = FontWeight.Bold,
-                            color = Color(0xFFFFFFFF),
-                        )
-                    )
-
-                }
-
-                Row(
+            Box(modifier = Modifier.constrainAs(box) {
+                top.linkTo(parent.top)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+                bottom.linkTo(parent.bottom)
+            }) {
+                Image(
+                    painter = painterResource(id = R.drawable.mainimage),
+                    contentDescription = "null",
                     modifier = Modifier
-                        .fillMaxWidth(0.7f)
-                        .height(64.dp)
-                        .background(
-                            color = Color(0xFFF8F8F8),
-                            shape = RoundedCornerShape(28.dp)
+                        .fillMaxSize()
+                        .fillMaxHeight()
+                )
+                Image(
+                    painter = painterResource(id = R.drawable.concurrencyimage),
+                    contentDescription = "",
+                    modifier = Modifier
+                        .align(Alignment.TopStart)
+                        .width(200.dp)
+                        .height(84.dp)
+                        .padding(top = 32.dp, start = 28.dp)
+                )
+                Text(
+                    text = "Currency Converter",
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .padding(top = 32.dp),
+                    style = TextStyle(
+                        fontSize = 22.sp,
+                        fontFamily = FontFamily(Font(R.font.montserratmedium)),
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFFFFFFFF),
+                    )
+                )
+                Text(
+                    text = "Check live foreign currency exchange rates",
+                    modifier = Modifier
+                        .align(Alignment.BottomCenter)
+                        .padding(bottom = 64.dp),
+                    style = TextStyle(
+                        fontSize = 12.sp,
+                        fontFamily = FontFamily(Font(R.font.montserratthin)),
+                        fontWeight = FontWeight.Bold,
+                        color = Color(0xFFFFFFFF),
+                    )
+                )
+
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(0.7f)
+                    .height(64.dp)
+                    .background(
+                        color = Color(0xFFF8F8F8),
+                        shape = RoundedCornerShape(28.dp)
+                    )
+                    .constrainAs(row) {
+                        top.linkTo(box.bottom)
+                        bottom.linkTo(box.bottom)
+                        start.linkTo(box.start)
+                        end.linkTo(box.end)
+                    },
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceEvenly
+
+            ) {
+                TextButton(
+                    onClick = {
+                        onConvertToggleButtonClick()
+                    }, modifier = if (convertButtonClicked) {
+                        Modifier
+                            .background(
+                                color = Color.White,
+                                shape = RoundedCornerShape(26.dp)
+                            )
+                            .padding(horizontal = 24.dp)
+
+                    } else Modifier.background(color = Color(0xFFF8F8F8))
+                ) {
+                    Text(
+                        text = "Convert",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight(400),
+                        fontFamily = FontFamily(Font(R.font.poppins)),
+                        color = Color(0xFF141414),
+
                         )
-                        .constrainAs(row) {
-                            top.linkTo(box.bottom)
-                            bottom.linkTo(box.bottom)
-                            start.linkTo(box.start)
-                            end.linkTo(box.end)
-                        },
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
+                }
+                TextButton(
+                    onClick = { onCompareToggleButtonClick() },
+                    modifier = if (compareButtonClicked) {
+                        Modifier
+                            .background(
+                                color = Color.White,
+                                shape = RoundedCornerShape(24.dp)
+                            )
+                            .padding(horizontal = 16.dp)
+                    } else Modifier.background(color = Color(0xFFF8F8F8))
 
                 ) {
-                    TextButton(
-                        onClick = {
-                            onConvertButtonClick()
-                        }, modifier = if (convertButtonClicked) {
-                            Modifier
-                                .background(
-                                    color = Color.White,
-                                    shape = RoundedCornerShape(26.dp)
-                                )
-                                .padding(horizontal = 24.dp)
 
-                        } else Modifier.background(color = Color(0xFFF8F8F8))
-                    ) {
-                        Text(
-                            text = "Convert",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight(400),
-                            fontFamily = FontFamily(Font(R.font.poppins)),
-                            color = Color(0xFF141414),
+                    Text(
+                        text = "Compare",
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight(400),
+                        fontFamily = FontFamily(Font(R.font.poppins)),
+                        color = Color(0xFF141414)
+                    )
 
-                            )
-                    }
-                    TextButton(
-                        onClick = { onCompareButtonClick() },
-                        modifier = if (compareButtonClicked) {
-                            Modifier
-                                .background(
-                                    color = Color.White,
-                                    shape = RoundedCornerShape(24.dp)
-                                )
-                                .padding(horizontal = 16.dp)
-                        } else Modifier.background(color = Color(0xFFF8F8F8))
-
-                    ) {
-
-                        Text(
-                            text = "Compare",
-                            fontSize = 16.sp,
-                            fontWeight = FontWeight(400),
-                            fontFamily = FontFamily(Font(R.font.poppins)),
-                            color = Color(0xFF141414)
-                        )
-
-                    }
                 }
             }
-
         }
-        Spacer(modifier = Modifier.height(32.dp))
+
+    }
+    Spacer(modifier = Modifier.height(32.dp))
+}
+
+@Composable
+fun Main(
+    currenciesList: List<Data>,
+    convertToggleButtonClicked:Boolean,
+    compareToggleButtonClicked:Boolean,
+    convertButtonClick: () -> Unit,
+    isConvertToMenuExpanded: Boolean,
+    convertToSelectedCurrencyCode: String,
+    convertToSelectedCurrencyFlag: String,
+    onConvertToDropDownIconClick: () -> Unit,
+    onConvertDropDownMenusDismissRequest: () -> Unit,
+    onConvertToItemSelected: (String, String) -> Unit,
+    isConvertFromMenuExpanded: Boolean,
+    convertFromSelectedCurrencyCode: String,
+    convertFromSelectedCurrencyFlag: String,
+    onConvertFromDropDownIconClick: () -> Unit,
+    onConvertFromItemSelected: (String, String) -> Unit,
+    inputConvertAmount: String,
+    convertedAmount: String,
+    onConvertInputTextChange: (String) -> Unit,
+    isCompareFromMenuExpanded: Boolean,
+    isFirstTargetMenuCompareExpanded: Boolean,
+    isSecondTargetMenuCompareExpanded: Boolean,
+    fromSelectedCompareCode: String,
+    fromSelectedCompareFlag: String,
+    firstTargetCompareCode: String,
+    firstTargetCompareFlag: String,
+    secondTargetCompareCode: String,
+    secondTargetCompareFlag: String,
+    onFromDropDownCompareIconClick: () -> Unit,
+    onFirstTargetDropDownCompareIconClick: () -> Unit,
+    onSecondTargetDropDownCompareIconClick: () -> Unit,
+    onCompareDropDownMenusDismissRequest: () -> Unit,
+    onFromCompareItemSelected: (String, String) -> Unit,
+    onFirstTargetCompareItemSelected: (String, String) -> Unit,
+    onSecondTargetCompareItemSelected: (String, String) -> Unit,
+    compareInputAmount: String,
+    firstTarget: String,
+    secondTarget: String,
+    onCompareInputTextChange: (String) -> Unit,
+    onCompareButtonClick: () -> Unit,
+) {
+    Column(modifier = Modifier.background(Color.White)) {
         Box(
             modifier = Modifier
                 .fillMaxHeight(0.7f)
@@ -200,55 +229,86 @@ fun Main(
         ) {
 
             AnimatedContent(
-                targetState = compareButtonClicked, modifier = Modifier
+                targetState = compareToggleButtonClicked, modifier = Modifier
                     .fillMaxWidth(),
                 content = { compareButtonClicked ->
 
                     if (compareButtonClicked) {
-
-                        Compare()
-
+                        Compare(
+                            currenciesList = currenciesList,
+                            firstTargetCompareCode = firstTargetCompareCode,
+                            isCompareFromMenuExpanded = isCompareFromMenuExpanded,
+                            isFirstTargetMenuCompareExpanded = isFirstTargetMenuCompareExpanded,
+                            isSecondTargetMenuCompareExpanded = isSecondTargetMenuCompareExpanded,
+                            onFromDropDownCompareIconClick = { onFromDropDownCompareIconClick() },
+                            firstTargetCompareFlag = firstTargetCompareFlag,
+                            fromSelectedCompareCode = fromSelectedCompareCode,
+                            onSecondTargetCompareItemSelected = { code, flag ->
+                                onSecondTargetCompareItemSelected(
+                                    code,
+                                    flag
+                                )
+                            },
+                            fromSelectedCompareFlag = fromSelectedCompareFlag,
+                            secondTargetCompareCode = secondTargetCompareCode,
+                            secondTargetCompareFlag = secondTargetCompareFlag,
+                            onSecondTargetDropDownCompareIconClick = onSecondTargetDropDownCompareIconClick,
+                            firstTarget = firstTarget,
+                            compareInputAmount = compareInputAmount,
+                            onCompareDropDownMenusDismissRequest = onCompareDropDownMenusDismissRequest,
+                            onFirstTargetCompareItemSelected = onFirstTargetCompareItemSelected,
+                            onFirstTargetDropDownCompareIconClick = onFirstTargetDropDownCompareIconClick,
+                            onFromCompareItemSelected = onFromCompareItemSelected,
+                            onCompareInputTextChange = onCompareInputTextChange,
+                            secondTarget = secondTarget,
+                            onCompareButtonClick = { onCompareButtonClick() }
+                        )
                     }
-                    if (convertButtonClicked) {
+                    if (convertToggleButtonClicked) {
                         CurrencyCard(
                             currenciesList = currenciesList,
                             onConvertButtonClick = { convertButtonClick() },
-                            isToExpanded = isToExpanded,
-                            toSelectedCurrencyCode = toSelectedCurrencyCode,
-                            toSelectedCurrencyFlag = toSelectedCurrencyFlag,
-                            onToDropDownIconClick = { onToDropDownIconClick() },
-                            onDropDownMenuDismissRequest = { onDropDownMenuDismissRequest() },
-                            onToItemSelected = { code, flag -> onToItemSelected(code, flag) },
-                            isFromExpanded = isFromExpanded,
-                            fromSelectedCurrencyCode = fromSelectedCurrencyCode,
-                            fromSelectedCurrencyFlag = fromSelectedCurrencyFlag,
-                            onFromDropDownIconClick = { onFromDropDownIconClick() },
-                            onFromItemSelected = { code, flag -> onFromItemSelected(code, flag) },
-                            amount =amount,
+                            isToExpanded = isConvertToMenuExpanded,
+                            toSelectedCurrencyCode = convertToSelectedCurrencyCode,
+                            toSelectedCurrencyFlag = convertToSelectedCurrencyFlag,
+                            onToDropDownIconClick = { onConvertToDropDownIconClick() },
+                            onDropDownMenuDismissRequest = { onConvertDropDownMenusDismissRequest() },
+                            onToItemSelected = { code, flag ->
+                                onConvertToItemSelected(
+                                    code,
+                                    flag
+                                )
+                            },
+                            isFromExpanded = isConvertFromMenuExpanded,
+                            fromSelectedCurrencyCode = convertFromSelectedCurrencyCode,
+                            fromSelectedCurrencyFlag = convertFromSelectedCurrencyFlag,
+                            onFromDropDownIconClick = { onConvertFromDropDownIconClick() },
+                            onFromItemSelected = { code, flag ->
+                                onConvertFromItemSelected(
+                                    code,
+                                    flag
+                                )
+                            },
+                            amount = inputConvertAmount,
                             convertedAmount = convertedAmount,
-                            onInputTextChange = {onConvertInputTextChange(it)}
+                            onInputTextChange = { onConvertInputTextChange(it) }
                         )
                     }
 
                 }, transitionSpec = {
                     slideInHorizontally(
                         initialOffsetX = {
-                            if (compareButtonClicked) it else -it
+                            if (compareToggleButtonClicked) it else -it
                         }
                     ) togetherWith slideOutHorizontally(
                         targetOffsetX = {
-                            if (compareButtonClicked) -it else it
+                            if (compareToggleButtonClicked) -it else it
                         }
                     )
 
                 }, label = ""
             )
         }
-
-
-    }
-    Box(modifier = Modifier.fillMaxHeight(1f)) {
-
     }
 }
 

@@ -9,14 +9,4 @@ class GetAllCurrenciesUseCase(private val repository: Repository = Repository())
         return repository.getAllSupportedCurrencies()
     }
 
-    suspend fun getAllCurrenciesWithSelection(): List<Currency> {
-        return repository.getAllSupportedCurrencies().data.map {
-            Currency(
-                flag = it.flagUrl,
-                currencyRate = 0.0,
-                currencyCode = it.code,
-                name = it.name
-            )
-        }
-    }
 }

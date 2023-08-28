@@ -7,9 +7,7 @@ import androidx.room.PrimaryKey
 data class Currency(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
-    val flag: String,
-    val currencyCode: String,
-    val currencyRate: Double,
-    val name:String,
-    val isSelected: Boolean = false,
+    val code: String,
+    val flag : String,
+    val name : String
 )

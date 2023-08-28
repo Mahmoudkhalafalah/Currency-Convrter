@@ -6,12 +6,13 @@ import androidx.lifecycle.viewModelScope
 import com.example.currencyconverter.data.data_source.model.currencies.Data
 import com.example.currencyconverter.domain.use_cases.ConvertCurrencyUseCase
 import com.example.currencyconverter.domain.use_cases.GetAllCurrenciesUseCase
+import com.example.currencyconverter.presentation.BaseViewModel
 import kotlinx.coroutines.launch
 
-class ConvertAndCompareViewModel(
+class ConvertViewModel(
     private val getCurrencies: GetAllCurrenciesUseCase = GetAllCurrenciesUseCase(),
     private val convertCurrency: ConvertCurrencyUseCase = ConvertCurrencyUseCase(),
-) : ViewModel() {
+) : ViewModel()  {
 
     private val _convertButtonClicked = mutableStateOf(true)
     val convertButtonClicked = _convertButtonClicked

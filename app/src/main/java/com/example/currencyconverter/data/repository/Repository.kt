@@ -4,6 +4,7 @@ import androidx.room.Room
 import com.example.currencyconverter.data.data_source.database.CurrenciesDataBase
 import com.example.currencyconverter.data.data_source.model.comparison.CurrenciesComparisonResponseModel
 import com.example.currencyconverter.data.data_source.model.currencies.SupportedCurrenciesResponseModel
+import com.example.currencyconverter.data.data_source.model.favourites.FavouriteCurrenciesRatesResponseModel
 import com.example.currencyconverter.data.data_source.model.pair_conversion.PairConversionResponseModel
 import com.example.currencyconverter.data.data_source.network.NetworkServices
 import com.example.currencyconverter.domain.model.Currency
@@ -15,7 +16,7 @@ class Repository {
     private val context = AppClass.appContext
 
     private var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("https://currencyconversionproject-production.up.railway.app/")
+        .baseUrl("https://diligent-stranger-production.up.railway.app/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val retrofitAPI: NetworkServices = retrofit.create(NetworkServices::class.java)
@@ -47,19 +48,29 @@ class Repository {
         return retrofitAPI.getAllSupportedCurrencies()
     }
 
-    fun getAllCurrencies(): List<Currency> {
-        return currencyDao.getAllCurrencies()
+    suspend fun getFavouriteCurrenciesRates(
+        base: String,
+        favouritesList: List<String>,
+    ): FavouriteCurrenciesRatesResponseModel {
+        return retrofitAPI.getFavouriteCurrenciesExchangeRate(base, favouritesList)
     }
 
-    fun getSelectedCurrencies(): List<Currency> {
-        return currencyDao.getSelectedCurrencies()
+    fun getFavouriteCurrenciesCodes(): List<String> {
+        return currencyDao.getAllCurrenciesCodes()
+    }
+    fun getAllCurrencies():List<Currency>{
+        return currencyDao.getAllCurrencies()
     }
 
     fun addCurrency(currency: Currency) {
         currencyDao.insertCurrency(currency)
     }
 
-    fun updateCurrencySelectionState(state: Boolean, id: Int) {
-        currencyDao.updateCurrencySelectionState(state, id)
+    fun deleteCurrency(code: String) {
+        currencyDao.deleteCurrency(code)
+    }
+
+    fun findCurrency(code: String): Boolean {
+        return currencyDao.findCurrency(code)
     }
 }

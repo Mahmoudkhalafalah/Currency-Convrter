@@ -14,8 +14,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
@@ -25,7 +24,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -36,20 +37,31 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
 import com.example.currencyconverter.R
+import com.example.currencyconverter.data.data_source.model.currencies.Data
 import com.example.currencyconverter.domain.model.Currency
-
 
 @Composable
 fun FavouritesList(
     sheetVisibility: Boolean,
     onIconClick: () -> Unit,
     favouriteCurrenciesList: List<Currency>,
-    currenciesList: List<Currency>,
-    onItemSelection: (Int, Boolean) -> Unit,
+    favouriteListRates: List<Double>,
+    currenciesList: List<Data>,
+    onItemSelection: (String,String,String) -> Unit,
     onCloseIconClick: () -> Unit,
     onSheetDismissRequest: () -> Unit,
+    isItemSelected:(String)->Boolean
 ) {
     Column(modifier = Modifier.padding(horizontal = 32.dp)) {
+        Spacer(modifier = Modifier.height(32.dp))
+        Divider(
+            modifier = Modifier
+                .height(1.dp)
+                .fillMaxWidth()
+                .alpha(0.3f),
+            color = Color(0xFFB9C1D9)
+        )
+        Spacer(modifier = Modifier.height(32.dp))
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
@@ -89,8 +101,6 @@ fun FavouritesList(
                 )
 
             }
-
-
         }
         Spacer(modifier = Modifier.height(12.dp))
         Text(
@@ -104,7 +114,7 @@ fun FavouritesList(
             )
         )
         Spacer(modifier = Modifier.height(12.dp))
-        FavouriteCurrenciesListDisplay(favouriteCurrenciesList)
+        FavouriteCurrenciesListDisplay(favouriteCurrenciesList,favouriteListRates)
 
 
     }
@@ -115,8 +125,9 @@ fun FavouritesList(
             currenciesList = currenciesList,
             onCloseIconClick = { onCloseIconClick() },
 
-            onItemSelection = { id, state -> onItemSelection(id, state) },
-            onSheetDismissRequest = { onSheetDismissRequest() }
+            onItemSelection = {code,name,flag->onItemSelection(code,name,flag) },
+            onSheetDismissRequest = { onSheetDismissRequest() },
+            isItemSelected = {isItemSelected(it)}
         )
     }
 
@@ -125,15 +136,15 @@ fun FavouritesList(
 @Composable
 fun FavouriteCurrenciesListDisplay(
     favouriteCurrenciesList: List<Currency>,
+    favouriteListRates: List<Double>
 ) {
-
-
-    LazyColumn(modifier = Modifier.height(200.dp)) {
-        items(favouriteCurrenciesList) {
+    var iterator = 0
+    Column{
+        favouriteCurrenciesList.forEach {
             ListItem(
                 headlineContent = {
                     Text(
-                        text = "USD", style = TextStyle(
+                        text = it.code, style = TextStyle(
                             fontSize = 16.sp,
                             lineHeight = 24.sp,
                             fontFamily = FontFamily(Font(R.font.poppins)),
@@ -144,7 +155,7 @@ fun FavouriteCurrenciesListDisplay(
                 },
                 supportingContent = {
                     Text(
-                        text = "Currency",
+                        text = it.name,
                         style = TextStyle(
                             fontSize = 14.sp,
                             lineHeight = 20.sp,
@@ -156,23 +167,16 @@ fun FavouriteCurrenciesListDisplay(
                 },
                 leadingContent = {
                     AsyncImage(
-                        model = it.flag, contentDescription = it.currencyCode, modifier = Modifier
+                        model = it.flag, contentDescription = it.code, modifier = Modifier
                             .padding(end = 8.dp)
-                            .width(48.dp)
-                            .height(48.dp)
+                            .size(48.dp)
+                            .clip(CircleShape),
+                        contentScale = ContentScale.FillBounds
                     )
-                    /*Image(
-                        painter = painterResource(id = R.drawable.united_states),
-                        contentDescription = it.currencyCode,
-                        modifier = Modifier
-                            .padding(end = 8.dp)
-                            .width(48.dp)
-                            .height(48.dp)
-                    )*/
                 },
                 trailingContent = {
                     Text(
-                        text = it.currencyRate.toString(),
+                        text = favouriteListRates[iterator++].toString(),
                         style = TextStyle(
                             fontSize = 18.sp,
                             lineHeight = 24.sp,

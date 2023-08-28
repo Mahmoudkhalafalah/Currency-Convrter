@@ -1,7 +1,6 @@
 package com.example.currencyconverter.presentation.upperUi
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -14,12 +13,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -37,18 +31,19 @@ fun CurrencyCard(
     isToExpanded: Boolean,
     toSelectedCurrencyCode: String,
     toSelectedCurrencyFlag: String,
-    onToDropDownIconClick:()->Unit,
-    onDropDownMenuDismissRequest:()->Unit,
-    onToItemSelected:(String,String)->Unit,
+    onToDropDownIconClick: () -> Unit,
+    onDropDownMenuDismissRequest: () -> Unit,
+    onToItemSelected: (String, String) -> Unit,
     isFromExpanded: Boolean,
     fromSelectedCurrencyCode: String,
     fromSelectedCurrencyFlag: String,
-    onFromDropDownIconClick:()->Unit,
-    onFromItemSelected:(String,String)->Unit,
+    onFromDropDownIconClick: () -> Unit,
+    onFromItemSelected: (String, String) -> Unit,
     amount: String,
-    convertedAmount:String,
-    onInputTextChange:(String)->Unit
-) {
+    convertedAmount: String,
+    onInputTextChange: (String) -> Unit,
+
+    ) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -81,6 +76,7 @@ fun CurrencyCard(
             ) {
 
                 PoppinsFontText(text = "From")
+                Spacer(modifier = Modifier.height(16.dp))
                 DropDownMenu(
                     currenciesList = currenciesList,
                     isExpanded = isFromExpanded,
@@ -88,7 +84,7 @@ fun CurrencyCard(
                     selectedCurrencyFlag = fromSelectedCurrencyFlag,
                     onDropDownIconClick = { onFromDropDownIconClick() },
                     onDropDownMenuDismissRequest = { onDropDownMenuDismissRequest() },
-                    onItemSelected = {code,flag->onFromItemSelected(code,flag)}
+                    onItemSelected = { code, flag -> onFromItemSelected(code, flag) }
                 )
             }
         }
@@ -104,6 +100,7 @@ fun CurrencyCard(
                 modifier = Modifier.weight(1.5f)
             ) {
                 PoppinsFontText(text = "To")
+                Spacer(modifier = Modifier.height(16.dp))
 
                 DropDownMenu(
                     currenciesList = currenciesList,
@@ -112,7 +109,7 @@ fun CurrencyCard(
                     selectedCurrencyFlag = toSelectedCurrencyFlag,
                     onDropDownIconClick = { onToDropDownIconClick() },
                     onDropDownMenuDismissRequest = { onDropDownMenuDismissRequest() },
-                    onItemSelected = {code,flag->onToItemSelected(code,flag)}
+                    onItemSelected = { code, flag -> onToItemSelected(code, flag) }
                 )
             }
             Spacer(modifier = Modifier.width(16.dp))

@@ -22,7 +22,7 @@ interface NetworkServices {
     suspend fun getExchangeAmountComparison(
         @Query("base") base: String,
         @Query("target1") firstTarget: String,
-        @Query("target") secondTarget: String,
+        @Query("target2") secondTarget: String,
         @Query("amount") amount: Double,
     ): CurrenciesComparisonResponseModel
 
@@ -30,7 +30,7 @@ interface NetworkServices {
     suspend fun getFavouriteCurrenciesExchangeRate(
         @Query("base") base: String,
         @Body currenciesList: List<String>,
-    ):FavouriteCurrenciesRatesResponseModel
+    ): FavouriteCurrenciesRatesResponseModel
 
     @GET("currencies")
     suspend fun getAllSupportedCurrencies():SupportedCurrenciesResponseModel

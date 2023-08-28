@@ -2,20 +2,31 @@ package com.example.currencyconverter.presentation.edit_show_favourites
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
-import com.example.currencyconverter.R
+import androidx.lifecycle.viewModelScope
 import com.example.currencyconverter.domain.model.Currency
-import com.example.currencyconverter.domain.use_cases.AddCurrencyUseCase
-import com.example.currencyconverter.domain.use_cases.GetAllCurrenciesUseCase
-import com.example.currencyconverter.domain.use_cases.GetSelectedCurrenciesUseCase
-import com.example.currencyconverter.domain.use_cases.UpdateCurrencySelectionStateUseCase
+import com.example.currencyconverter.domain.use_cases.AddFavouriteCurrencyUseCase
+import com.example.currencyconverter.domain.use_cases.DeleteFavouriteCurrencyUseCase
+import com.example.currencyconverter.domain.use_cases.FindFavouriteCurrencyUseCase
+import com.example.currencyconverter.domain.use_cases.GetFavouriteCurrenciesCodesUseCase
+import com.example.currencyconverter.domain.use_cases.GetFavouriteCurrenciesRatesUseCase
+import com.example.currencyconverter.domain.use_cases.GetFavouriteCurrenciesUseCase
+import com.example.currencyconverter.presentation.BaseViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 class FavouritesViewModel(
-    private val getAllCurrencies: GetAllCurrenciesUseCase = GetAllCurrenciesUseCase(),
-    private val getSelectedCurrencies: GetSelectedCurrenciesUseCase = GetSelectedCurrenciesUseCase(),
-    private val addCurrency: AddCurrencyUseCase = AddCurrencyUseCase(),
-    private val updateCurrency: UpdateCurrencySelectionStateUseCase = UpdateCurrencySelectionStateUseCase(),
+    private val findFavouriteCurrency: FindFavouriteCurrencyUseCase = FindFavouriteCurrencyUseCase(),
+    private val addFavouriteCurrency: AddFavouriteCurrencyUseCase = AddFavouriteCurrencyUseCase(),
+    private val getFavouriteCurrenciesCodes: GetFavouriteCurrenciesCodesUseCase = GetFavouriteCurrenciesCodesUseCase(),
+    private val getFavouriteCurrenciesRates: GetFavouriteCurrenciesRatesUseCase = GetFavouriteCurrenciesRatesUseCase(),
+    private val getFavouriteCurrencies: GetFavouriteCurrenciesUseCase = GetFavouriteCurrenciesUseCase(),
+    private val deleteCurrency: DeleteFavouriteCurrencyUseCase = DeleteFavouriteCurrencyUseCase()
 ) : ViewModel() {
 
+
+    private val _favouritesListRates =
+        mutableStateOf<List<Double>>(emptyList())
+    val favouritesListRates = _favouritesListRates
 
     private val _favouritesList =
         mutableStateOf<List<Currency>>(emptyList())
@@ -27,47 +38,46 @@ class FavouritesViewModel(
     private val _dialogVisibility = mutableStateOf(false)
     val dialogVisibility = _dialogVisibility
 
-    init {
-        repeat(10) {
-            addCurrency.addCurrency(
-                Currency(
-                    flag = "https://flagcdn.com/32x24/eu.png",
-                    currencyCode = "EGP",
-                    currencyRate = 1.5,
-                    name = " "
-                )
-            )
-        }
+
+    init{
         updateFavouritesList()
     }
-
     private fun updateFavouritesList() {
-        _favouritesList.value = getSelectedCurrencies.getSelectedCurrencies()
+        viewModelScope.launch(Dispatchers.IO) {
+            val list = getFavouriteCurrenciesCodes.getSelectedCurrencies()
+            _favouritesListRates.value =
+                getFavouriteCurrenciesRates.getFavouriteCurrenciesRates("EGP", list).data
+            _favouritesList.value = getFavouriteCurrencies.getAllCurrencies()
+        }
     }
 
-
-    /*private fun updateCurrenciesList() {
-        _currenciesList.value = getAllCurrencies.getAllCurrencies()
-    }*/
-
     fun onAddFavouritesClick() {
-        //updateCurrenciesList()
         _dialogVisibility.value = true
     }
 
     fun onSheetDismissRequest() {
-        updateFavouritesList()
         _dialogVisibility.value = false
+        updateFavouritesList()
     }
 
     fun onCloseIconClick() {
-        updateFavouritesList()
         _dialogVisibility.value = false
+        updateFavouritesList()
     }
 
-    fun onItemSelect(state: Boolean, id: Int) {
-        updateCurrency.updateCurrencySelectionState(state, id)
-        //updateCurrenciesList()
+    fun onItemSelect(code: String, name: String, flag: String) {
+        if(isItemSelected(code)) {
+            deleteCurrency.deleteCurrency(code)
+        }
+        else
+        {
+            addFavouriteCurrency.addCurrency(Currency(code = code, name = name, flag = flag))
+        }
+        updateFavouritesList()
+    }
+
+    fun isItemSelected(code: String): Boolean {
+        return findFavouriteCurrency.findCurrency(code)
     }
 
 

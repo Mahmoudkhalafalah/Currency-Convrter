@@ -11,13 +11,18 @@ interface CurrencyDao {
     @Insert
     fun insertCurrency(currency: Currency)
 
-    @Query("UPDATE CurrenciesList SET isSelected = :isSelected WHERE id = :id")
-    fun updateCurrencySelectionState(isSelected: Boolean, id: Int)
+    @Query("DELETE FROM CurrenciesList WHERE code = :code ")
+    fun deleteCurrency(code:String)
 
-    @Query("SELECT * FROM CurrenciesList")
-    fun getAllCurrencies(): List<Currency>
+    @Query("SELECT code FROM CurrenciesList")
+    fun getAllCurrenciesCodes(): List<String>
 
-    @Query("SELECT * FROM CurrenciesList WHERE isSelected = 1")
-    fun getSelectedCurrencies(): List<Currency>
+    @Query("SELECT * FROM CurrenciesList WHERE code= :code")
+    fun findCurrency(code:String):Boolean
+
+    @Query("SELECT*FROM CurrenciesList")
+    fun getAllCurrencies():List<Currency>
+
+
 
 }

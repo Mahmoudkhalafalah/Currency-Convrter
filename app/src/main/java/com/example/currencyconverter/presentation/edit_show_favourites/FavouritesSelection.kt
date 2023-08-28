@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -16,8 +15,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.CheckboxDefaults
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -33,7 +30,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -41,16 +40,17 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.currencyconverter.R
-import com.example.currencyconverter.domain.model.Currency
+import com.example.currencyconverter.data.data_source.model.currencies.Data
 import com.example.currencyconverter.presentation.commoncomponents.PoppinsFontText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun FavouriteCurrenciesSelectionDisplay(
     onCloseIconClick: () -> Unit,
-    currenciesList: List<Currency>,
-    onItemSelection: (Int, Boolean) -> Unit,
+    currenciesList: List<Data>,
+    onItemSelection: (String, String, String) -> Unit,
     onSheetDismissRequest: () -> Unit,
+    isItemSelected: (String) -> Boolean,
 ) {
     val sheetState = rememberModalBottomSheetState()
     ModalBottomSheet(
@@ -79,7 +79,9 @@ fun FavouriteCurrenciesSelectionDisplay(
                 }
                 FavouritesSelectionColumn(
                     currenciesList = currenciesList,
-                    onItemSelection = { id, state -> onItemSelection(id, state) })
+                    onItemSelection = { code, name, flag -> onItemSelection(code, name, flag) },
+                    isItemSelected = { isItemSelected(it) }
+                )
             }
         }
     }
@@ -90,8 +92,9 @@ fun FavouriteCurrenciesSelectionDisplay(
 
 @Composable
 fun FavouritesSelectionColumn(
-    currenciesList: List<Currency>,
-    onItemSelection: (Int, Boolean) -> Unit,
+    currenciesList: List<Data>,
+    onItemSelection: (String, String, String) -> Unit,
+    isItemSelected: (String) -> Boolean,
 ) {
 
     Column(
@@ -111,12 +114,13 @@ fun FavouritesSelectionColumn(
             modifier = Modifier
                 .background(Color(0xFFF8F8F8))
                 .padding(horizontal = 8.dp)
+                .height(1000.dp)
         ) {
             items(currenciesList) {
                 ListItem(
                     headlineContent = {
                         Text(
-                            text = "USD", style = TextStyle(
+                            text = it.code, style = TextStyle(
                                 fontSize = 16.sp,
                                 lineHeight = 24.sp,
                                 fontFamily = FontFamily(Font(R.font.poppins)),
@@ -127,7 +131,7 @@ fun FavouritesSelectionColumn(
                     },
                     supportingContent = {
                         Text(
-                            text = "Currency",
+                            text = it.name,
                             style = TextStyle(
                                 fontSize = 14.sp,
                                 lineHeight = 20.sp,
@@ -140,7 +144,7 @@ fun FavouritesSelectionColumn(
                     leadingContent = {
                         Image(
                             painter = painterResource(id = R.drawable.united_states),
-                            contentDescription = it.currencyCode,
+                            contentDescription = it.code,
                             modifier = Modifier
                                 .padding(end = 8.dp)
                                 .width(44.dp)
@@ -148,14 +152,12 @@ fun FavouritesSelectionColumn(
                         )
                     },
                     trailingContent = {
-                        Checkbox(
-                            checked = it.isSelected,
-                            onCheckedChange = { state -> onItemSelection(it.id, state) },
-                            Modifier.size(24.dp).clip(RoundedCornerShape(.95f)),
-                            colors = CheckboxDefaults.colors(
-                                checkedColor = Color.Black
+                        IconButton(onClick = { onItemSelection(it.code, it.name, it.flagUrl) }) {
+                            Icon(
+                                imageVector = ImageVector.vectorResource(id = if (isItemSelected(it.code)) R.drawable.baseline_check_circle_24 else R.drawable.outline_circle_24),
+                                contentDescription = "check icon"
                             )
-                        )
+                        }
                     },
                     colors = ListItemDefaults.colors((Color(0xFFF8F8F8)))
                 )
