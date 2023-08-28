@@ -1,7 +1,8 @@
 package com.example.currencyconverter.data.data_source.network
 
-import com.example.currencyconverter.data.data_source.model.comparison.ComparisonResponseModel
-import com.example.currencyconverter.data.data_source.model.pair_conversion.PairExchangeResponseModel
+import com.example.currencyconverter.data.data_source.model.comparison.CurrenciesComparisonResponseModel
+import com.example.currencyconverter.data.data_source.model.favourites.FavouriteCurrenciesRatesResponseModel
+import com.example.currencyconverter.data.data_source.model.pair_conversion.PairConversionResponseModel
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -14,7 +15,7 @@ interface NetworkServices {
         @Query("base") base: String,
         @Query("target") target: String,
         @Query("amount") amount: Double,
-    ):
+    ):PairConversionResponseModel
 
     @GET("/comparison")
     suspend fun getExchangeAmountComparison(
@@ -22,14 +23,15 @@ interface NetworkServices {
         @Query("target1") firstTarget: String,
         @Query("target") secondTarget: String,
         @Query("amount") amount: Double,
-    ): ComparisonResponseModel
+    ): CurrenciesComparisonResponseModel
 
     @POST("favorite-currencies")
     suspend fun getFavouriteCurrenciesExchangeRate(
         @Query("base") base: String,
         @Body currenciesList: List<String>,
-    )
+    ):FavouriteCurrenciesRatesResponseModel
 
-    @GET("")
+    @GET("currencies")
+    suspend fun getAllSupportedCurrencies()
 
 }
