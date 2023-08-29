@@ -145,7 +145,8 @@ fun FavouritesSelectionColumn(
                             .padding(end = 8.dp)
                             .size(48.dp)
                             .clip(CircleShape),
-                            contentScale = ContentScale.FillBounds)
+                            contentScale = ContentScale.FillBounds
+                        )
 
                     },
                     trailingContent = {
