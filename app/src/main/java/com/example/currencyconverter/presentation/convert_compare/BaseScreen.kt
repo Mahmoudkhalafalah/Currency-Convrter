@@ -288,7 +288,6 @@ fun Main(
                             convertedAmount = convertedAmount,
                             onInputTextChange = { onConvertInputTextChange(it) })
                     }
-
                 },
                 transitionSpec = {
                     slideInHorizontally(initialOffsetX = {
@@ -296,7 +295,6 @@ fun Main(
                     }) togetherWith slideOutHorizontally(targetOffsetX = {
                         if (compareToggleButtonClicked) -it else it
                     })
-
                 },
                 label = ""
             )

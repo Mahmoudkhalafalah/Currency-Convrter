@@ -49,6 +49,7 @@ class FavouritesViewModel(
     init {
         viewModelScope.launch {
             updateFavouritesList()
+            delay(2000)
             _isAppLoaded.emit(true)
         }
     }

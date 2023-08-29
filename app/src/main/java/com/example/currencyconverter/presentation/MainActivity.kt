@@ -65,15 +65,24 @@ class MainActivity : AppCompatActivity() {
                 }
                 LaunchedEffect(key1 = true) {
                     compareViewModel.error.collect {
-                        Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT)
+                        Toast.makeText(this@MainActivity, it, Toast.LENGTH_LONG)
                             .show()
                     }
                 }
-
+                LaunchedEffect(key1 = true) {
+                    favouritesViewModel.isAppLoaded.collect {
+                        if (it){
+                            navController.navigate("mainScreen")
+                            Toast.makeText(this@MainActivity, "Welcome Back", Toast.LENGTH_SHORT)
+                                .show()
+                        }
+                    }
+                }
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
+
                     val isLoading = favouritesViewModel.isLoading.collectAsState().value
                     val state = rememberSwipeRefreshState(isRefreshing = isLoading)
                     val composition by rememberLottieComposition(
@@ -98,12 +107,7 @@ class MainActivity : AppCompatActivity() {
                                     modifier = Modifier.size(200.dp)
                                 )
                             }
-                            LaunchedEffect(key1 = true) {
-                                favouritesViewModel.isAppLoaded.collect {
-                                    if (it)
-                                        navController.navigate("mainScreen")
-                                }
-                            }
+
                         }
                         composable("mainScreen") {
                             Column(

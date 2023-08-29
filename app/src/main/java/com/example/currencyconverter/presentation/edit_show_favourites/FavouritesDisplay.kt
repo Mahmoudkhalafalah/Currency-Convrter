@@ -4,6 +4,7 @@ package com.example.currencyconverter.presentation.edit_show_favourites
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -17,6 +18,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.ListItem
+import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -133,7 +135,7 @@ fun FavouriteCurrenciesListDisplay(
     favouriteListRates: List<Double>,
 ) {
     var iterator = 0
-    Column {
+    Column(modifier = Modifier.background(Color.White)) {
         favouriteCurrenciesList.forEach {
             ListItem(
                 headlineContent = {
@@ -179,7 +181,8 @@ fun FavouriteCurrenciesListDisplay(
                             color = Color(0xFF121212)
                         )
                     )
-                }
+                },
+                colors = ListItemDefaults.colors(containerColor = Color.White)
             )
             Divider(
                 modifier = Modifier

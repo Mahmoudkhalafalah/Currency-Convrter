@@ -17,7 +17,7 @@ class Repository {
     private val context = AppClass.appContext
 
     private var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("https://currencyconversionproject-production.up.railway.app/")
+        .baseUrl("https://tiresome-part-production.up.railway.app/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val retrofitAPI: NetworkServices = retrofit.create(NetworkServices::class.java)

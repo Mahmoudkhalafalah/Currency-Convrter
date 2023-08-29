@@ -92,7 +92,6 @@ fun PoppinsFontText(
     )
 }
 
-
 @Composable
 fun DropDownMenu(
     currenciesList: List<Data>,
