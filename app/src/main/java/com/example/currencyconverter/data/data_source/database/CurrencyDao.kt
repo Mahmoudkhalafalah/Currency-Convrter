@@ -12,17 +12,16 @@ interface CurrencyDao {
     fun insertCurrency(currency: Currency)
 
     @Query("DELETE FROM CurrenciesList WHERE code = :code ")
-    fun deleteCurrency(code:String)
+    fun deleteCurrency(code: String)
 
     @Query("SELECT code FROM CurrenciesList")
     fun getAllCurrenciesCodes(): List<String>
 
     @Query("SELECT * FROM CurrenciesList WHERE code= :code")
-    fun findCurrency(code:String):Boolean
+    fun findCurrency(code: String): Boolean
 
     @Query("SELECT*FROM CurrenciesList")
-    fun getAllCurrencies():List<Currency>
-
+    fun getAllCurrencies(): List<Currency>
 
 
 }

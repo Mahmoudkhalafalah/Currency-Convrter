@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Icon
@@ -39,6 +38,7 @@ import coil.compose.AsyncImage
 import com.example.currencyconverter.R
 import com.example.currencyconverter.data.data_source.model.currencies.Data
 import com.example.currencyconverter.domain.model.Currency
+import kotlin.math.roundToInt
 
 @Composable
 fun FavouritesList(
@@ -47,10 +47,10 @@ fun FavouritesList(
     favouriteCurrenciesList: List<Currency>,
     favouriteListRates: List<Double>,
     currenciesList: List<Data>,
-    onItemSelection: (String,String,String) -> Unit,
+    onItemSelection: (String, String, String) -> Unit,
     onCloseIconClick: () -> Unit,
     onSheetDismissRequest: () -> Unit,
-    isItemSelected:(String)->Boolean
+    isItemSelected: (String) -> Boolean,
 ) {
     Column(modifier = Modifier.padding(horizontal = 32.dp)) {
         Spacer(modifier = Modifier.height(32.dp))
@@ -99,7 +99,6 @@ fun FavouritesList(
                         color = Color(0xFF363636),
                     )
                 )
-
             }
         }
         Spacer(modifier = Modifier.height(12.dp))
@@ -114,32 +113,27 @@ fun FavouritesList(
             )
         )
         Spacer(modifier = Modifier.height(12.dp))
-        FavouriteCurrenciesListDisplay(favouriteCurrenciesList,favouriteListRates)
-
-
+        FavouriteCurrenciesListDisplay(favouriteCurrenciesList, favouriteListRates)
     }
-
     AnimatedVisibility(visible = sheetVisibility, enter = fadeIn()) {
-
         FavouriteCurrenciesSelectionDisplay(
             currenciesList = currenciesList,
             onCloseIconClick = { onCloseIconClick() },
 
-            onItemSelection = {code,name,flag->onItemSelection(code,name,flag) },
+            onItemSelection = { code, name, flag -> onItemSelection(code, name, flag) },
             onSheetDismissRequest = { onSheetDismissRequest() },
-            isItemSelected = {isItemSelected(it)}
+            isItemSelected = { isItemSelected(it) }
         )
     }
-
 }
 
 @Composable
 fun FavouriteCurrenciesListDisplay(
     favouriteCurrenciesList: List<Currency>,
-    favouriteListRates: List<Double>
+    favouriteListRates: List<Double>,
 ) {
     var iterator = 0
-    Column{
+    Column {
         favouriteCurrenciesList.forEach {
             ListItem(
                 headlineContent = {
@@ -176,7 +170,7 @@ fun FavouriteCurrenciesListDisplay(
                 },
                 trailingContent = {
                     Text(
-                        text = favouriteListRates[iterator++].toString(),
+                        text = (((favouriteListRates[iterator++] * 100).roundToInt()) / 100f).toString(),
                         style = TextStyle(
                             fontSize = 18.sp,
                             lineHeight = 24.sp,
@@ -195,6 +189,5 @@ fun FavouriteCurrenciesListDisplay(
                 color = Color(0xFFB9C1D9)
             )
         }
-
     }
 }

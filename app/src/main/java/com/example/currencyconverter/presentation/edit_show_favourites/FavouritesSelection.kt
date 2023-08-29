@@ -75,7 +75,6 @@ fun FavouriteCurrenciesSelectionDisplay(
                     modifier = Modifier.align(Alignment.End)
                 ) {
                     Icon(imageVector = Icons.Default.Clear, contentDescription = "")
-
                 }
                 FavouritesSelectionColumn(
                     currenciesList = currenciesList,
@@ -89,27 +88,23 @@ fun FavouriteCurrenciesSelectionDisplay(
 
 }
 
-
 @Composable
 fun FavouritesSelectionColumn(
     currenciesList: List<Data>,
     onItemSelection: (String, String, String) -> Unit,
     isItemSelected: (String) -> Boolean,
 ) {
-
     Column(
         modifier = Modifier
             .clip(shape = RoundedCornerShape(20.dp))
             .background(Color(0xFFF8F8F8))
     ) {
         Spacer(modifier = Modifier.height(32.dp))
-
         PoppinsFontText(
             text = "My Favourites",
             font = 18,
             modifier = Modifier.padding(start = 16.dp)
         )
-
         LazyColumn(
             modifier = Modifier
                 .background(Color(0xFFF8F8F8))
@@ -167,7 +162,6 @@ fun FavouritesSelectionColumn(
                         .alpha(0.3f)
                 )
             }
-
         }
     }
 }

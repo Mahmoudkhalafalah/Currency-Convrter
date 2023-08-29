@@ -4,7 +4,8 @@ import com.example.currencyconverter.data.repository.Repository
 
 class DeleteFavouriteCurrencyUseCase(private val repository: Repository = Repository()) {
 
-    fun deleteCurrency(code:String) {
+    fun deleteCurrency(code: String) {
         repository.deleteCurrency(code)
     }
+
 }

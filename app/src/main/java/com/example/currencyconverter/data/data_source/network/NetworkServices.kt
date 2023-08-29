@@ -16,7 +16,7 @@ interface NetworkServices {
         @Query("base") base: String,
         @Query("target") target: String,
         @Query("amount") amount: Double,
-    ):PairConversionResponseModel
+    ): PairConversionResponseModel
 
     @GET("/comparison")
     suspend fun getExchangeAmountComparison(
@@ -33,6 +33,6 @@ interface NetworkServices {
     ): FavouriteCurrenciesRatesResponseModel
 
     @GET("currencies")
-    suspend fun getAllSupportedCurrencies():SupportedCurrenciesResponseModel
+    suspend fun getAllSupportedCurrencies(): SupportedCurrenciesResponseModel
 
 }

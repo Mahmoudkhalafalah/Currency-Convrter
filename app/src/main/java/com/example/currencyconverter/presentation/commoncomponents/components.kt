@@ -44,8 +44,6 @@ fun InputTextField(
     onTextChange: (String) -> Unit,
     readOnly: Boolean = false,
 ) {
-
-
     OutlinedTextField(
         value = text,
         shape = RoundedCornerShape(25.dp),
@@ -92,9 +90,7 @@ fun PoppinsFontText(
         ), modifier = modifier,
         color = color
     )
-
 }
-
 
 
 @Composable
@@ -103,12 +99,10 @@ fun DropDownMenu(
     isExpanded: Boolean,
     selectedCurrencyCode: String,
     selectedCurrencyFlag: String,
-    onDropDownIconClick:()->Unit,
-    onDropDownMenuDismissRequest:()->Unit,
-    onItemSelected:(String,String)->Unit
+    onDropDownIconClick: () -> Unit,
+    onDropDownMenuDismissRequest: () -> Unit,
+    onItemSelected: (String, String) -> Unit,
 ) {
-
-
     val icon = if (isExpanded) Icons.Filled.KeyboardArrowUp else Icons.Filled.KeyboardArrowDown
     Row(
         verticalAlignment = Alignment.CenterVertically,
@@ -133,7 +127,6 @@ fun DropDownMenu(
                 .width(28.dp)
                 .height(20.dp)
         )
-
         Text(
             text = selectedCurrencyCode,
             style = TextStyle(
@@ -160,7 +153,6 @@ fun DropDownMenu(
                 tint = Color.Black
             )
         }
-
         DropdownMenu(
             expanded = isExpanded,
             modifier = Modifier
@@ -194,8 +186,7 @@ fun DropDownMenu(
                         )
                     },
                     onClick = {
-                        onItemSelected(it.code,it.flagUrl)
-
+                        onItemSelected(it.code, it.flagUrl)
                     }
                 )
             }

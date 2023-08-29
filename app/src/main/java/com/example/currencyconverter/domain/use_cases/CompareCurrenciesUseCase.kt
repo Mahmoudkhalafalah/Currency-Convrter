@@ -4,6 +4,7 @@ import com.example.currencyconverter.data.data_source.model.comparison.Currencie
 import com.example.currencyconverter.data.repository.Repository
 
 class CompareCurrenciesUseCase(private val repository: Repository = Repository()) {
+
     suspend fun getCurrenciesComparison(
         base: String,
         firstTarget: String,
@@ -12,4 +13,5 @@ class CompareCurrenciesUseCase(private val repository: Repository = Repository()
     ): CurrenciesComparisonResponseModel {
         return repository.getExchangeAmountComparison(base, firstTarget, secondTarget, amount)
     }
+
 }

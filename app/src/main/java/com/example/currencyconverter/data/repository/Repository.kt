@@ -13,10 +13,11 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 class Repository {
+
     private val context = AppClass.appContext
 
     private var retrofit: Retrofit = Retrofit.Builder()
-        .baseUrl("https://diligent-stranger-production.up.railway.app/")
+        .baseUrl("https://currencyconversionproject-production.up.railway.app/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()
     private val retrofitAPI: NetworkServices = retrofit.create(NetworkServices::class.java)
@@ -58,7 +59,8 @@ class Repository {
     fun getFavouriteCurrenciesCodes(): List<String> {
         return currencyDao.getAllCurrenciesCodes()
     }
-    fun getAllCurrencies():List<Currency>{
+
+    fun getAllCurrencies(): List<Currency> {
         return currencyDao.getAllCurrencies()
     }
 

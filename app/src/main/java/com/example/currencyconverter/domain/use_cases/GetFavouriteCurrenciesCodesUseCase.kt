@@ -7,4 +7,5 @@ class GetFavouriteCurrenciesCodesUseCase(private val repository: Repository = Re
     fun getSelectedCurrencies(): List<String> {
         return repository.getFavouriteCurrenciesCodes()
     }
+
 }

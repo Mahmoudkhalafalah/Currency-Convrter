@@ -1,4 +1,4 @@
-package com.example.currencyconverter.presentation.upperUi
+package com.example.currencyconverter.presentation.upperui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -133,8 +133,6 @@ fun CurrencyCard(
             horizontalArrangement = Arrangement.SpaceAround,
             modifier = Modifier.fillMaxWidth()
         ) {
-
-
             Button(
                 onClick = { onConvertButtonClick() }, modifier = Modifier
                     .fillMaxWidth()

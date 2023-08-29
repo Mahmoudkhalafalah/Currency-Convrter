@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalAnimationApi::class)
 
-package com.example.currencyconverter.presentation.upperUi
+package com.example.currencyconverter.presentation.upperui
 
 
 import androidx.compose.animation.AnimatedContent
@@ -22,13 +22,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
@@ -40,7 +38,6 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.currencyconverter.R
 import com.example.currencyconverter.data.data_source.model.currencies.Data
-
 
 @Composable
 fun Header(
@@ -61,7 +58,6 @@ fun Header(
                 .align(Alignment.TopCenter)
         ) {
             val (box, row) = createRefs()
-
             Box(modifier = Modifier.constrainAs(box) {
                 top.linkTo(parent.top)
                 start.linkTo(parent.start)
@@ -108,15 +104,13 @@ fun Header(
                         color = Color(0xFFFFFFFF),
                     )
                 )
-
             }
             Row(
                 modifier = Modifier
                     .fillMaxWidth(0.7f)
                     .height(64.dp)
                     .background(
-                        color = Color(0xFFF8F8F8),
-                        shape = RoundedCornerShape(28.dp)
+                        color = Color(0xFFF8F8F8), shape = RoundedCornerShape(28.dp)
                     )
                     .constrainAs(row) {
                         top.linkTo(box.bottom)
@@ -134,8 +128,7 @@ fun Header(
                     }, modifier = if (convertButtonClicked) {
                         Modifier
                             .background(
-                                color = Color.White,
-                                shape = RoundedCornerShape(26.dp)
+                                color = Color.White, shape = RoundedCornerShape(26.dp)
                             )
                             .padding(horizontal = 24.dp)
 
@@ -155,8 +148,7 @@ fun Header(
                     modifier = if (compareButtonClicked) {
                         Modifier
                             .background(
-                                color = Color.White,
-                                shape = RoundedCornerShape(24.dp)
+                                color = Color.White, shape = RoundedCornerShape(24.dp)
                             )
                             .padding(horizontal = 16.dp)
                     } else Modifier.background(color = Color(0xFFF8F8F8))
@@ -170,7 +162,6 @@ fun Header(
                         fontFamily = FontFamily(Font(R.font.poppins)),
                         color = Color(0xFF141414)
                     )
-
                 }
             }
         }
@@ -182,8 +173,8 @@ fun Header(
 @Composable
 fun Main(
     currenciesList: List<Data>,
-    convertToggleButtonClicked:Boolean,
-    compareToggleButtonClicked:Boolean,
+    convertToggleButtonClicked: Boolean,
+    compareToggleButtonClicked: Boolean,
     convertButtonClick: () -> Unit,
     isConvertToMenuExpanded: Boolean,
     convertToSelectedCurrencyCode: String,
@@ -225,17 +216,17 @@ fun Main(
         Box(
             modifier = Modifier
                 .fillMaxHeight(0.7f)
-                .background(Color.White), contentAlignment = Alignment.TopCenter
+                .background(Color.White),
+            contentAlignment = Alignment.TopCenter
         ) {
 
             AnimatedContent(
-                targetState = compareToggleButtonClicked, modifier = Modifier
-                    .fillMaxWidth(),
+                targetState = compareToggleButtonClicked,
+                modifier = Modifier.fillMaxWidth(),
                 content = { compareButtonClicked ->
 
                     if (compareButtonClicked) {
-                        Compare(
-                            currenciesList = currenciesList,
+                        Compare(currenciesList = currenciesList,
                             firstTargetCompareCode = firstTargetCompareCode,
                             isCompareFromMenuExpanded = isCompareFromMenuExpanded,
                             isFirstTargetMenuCompareExpanded = isFirstTargetMenuCompareExpanded,
@@ -245,8 +236,7 @@ fun Main(
                             fromSelectedCompareCode = fromSelectedCompareCode,
                             onSecondTargetCompareItemSelected = { code, flag ->
                                 onSecondTargetCompareItemSelected(
-                                    code,
-                                    flag
+                                    code, flag
                                 )
                             },
                             fromSelectedCompareFlag = fromSelectedCompareFlag,
@@ -261,12 +251,10 @@ fun Main(
                             onFromCompareItemSelected = onFromCompareItemSelected,
                             onCompareInputTextChange = onCompareInputTextChange,
                             secondTarget = secondTarget,
-                            onCompareButtonClick = { onCompareButtonClick() }
-                        )
+                            onCompareButtonClick = { onCompareButtonClick() })
                     }
                     if (convertToggleButtonClicked) {
-                        CurrencyCard(
-                            currenciesList = currenciesList,
+                        CurrencyCard(currenciesList = currenciesList,
                             onConvertButtonClick = { convertButtonClick() },
                             isToExpanded = isConvertToMenuExpanded,
                             toSelectedCurrencyCode = convertToSelectedCurrencyCode,
@@ -275,8 +263,7 @@ fun Main(
                             onDropDownMenuDismissRequest = { onConvertDropDownMenusDismissRequest() },
                             onToItemSelected = { code, flag ->
                                 onConvertToItemSelected(
-                                    code,
-                                    flag
+                                    code, flag
                                 )
                             },
                             isFromExpanded = isConvertFromMenuExpanded,
@@ -285,28 +272,24 @@ fun Main(
                             onFromDropDownIconClick = { onConvertFromDropDownIconClick() },
                             onFromItemSelected = { code, flag ->
                                 onConvertFromItemSelected(
-                                    code,
-                                    flag
+                                    code, flag
                                 )
                             },
                             amount = inputConvertAmount,
                             convertedAmount = convertedAmount,
-                            onInputTextChange = { onConvertInputTextChange(it) }
-                        )
+                            onInputTextChange = { onConvertInputTextChange(it) })
                     }
 
-                }, transitionSpec = {
-                    slideInHorizontally(
-                        initialOffsetX = {
-                            if (compareToggleButtonClicked) it else -it
-                        }
-                    ) togetherWith slideOutHorizontally(
-                        targetOffsetX = {
-                            if (compareToggleButtonClicked) -it else it
-                        }
-                    )
+                },
+                transitionSpec = {
+                    slideInHorizontally(initialOffsetX = {
+                        if (compareToggleButtonClicked) it else -it
+                    }) togetherWith slideOutHorizontally(targetOffsetX = {
+                        if (compareToggleButtonClicked) -it else it
+                    })
 
-                }, label = ""
+                },
+                label = ""
             )
         }
     }

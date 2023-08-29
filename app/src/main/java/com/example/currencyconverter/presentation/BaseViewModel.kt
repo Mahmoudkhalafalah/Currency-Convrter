@@ -32,17 +32,19 @@ open class BaseViewModel : ViewModel() {
                     viewModelScope.launch {
                         _throwError.emit("un authorized")
                     }
-
                 }
 
                 403 -> {
                     viewModelScope.launch {
                         _throwError.emit("Error")
                     }
-
                 }
 
-
+                else -> {
+                    viewModelScope.launch {
+                        _throwError.emit("Error")
+                    }
+                }
             }
         }
     }

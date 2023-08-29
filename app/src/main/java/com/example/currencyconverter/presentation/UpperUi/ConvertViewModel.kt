@@ -1,18 +1,23 @@
-package com.example.currencyconverter.presentation.upperUi
+package com.example.currencyconverter.presentation.upperui
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.currencyconverter.data.data_source.model.currencies.Data
 import com.example.currencyconverter.domain.use_cases.ConvertCurrencyUseCase
 import com.example.currencyconverter.domain.use_cases.GetAllCurrenciesUseCase
 import com.example.currencyconverter.presentation.BaseViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 class ConvertViewModel(
     private val getCurrencies: GetAllCurrenciesUseCase = GetAllCurrenciesUseCase(),
     private val convertCurrency: ConvertCurrencyUseCase = ConvertCurrencyUseCase(),
-) : ViewModel()  {
+) : BaseViewModel() {
+
+    private val _error = MutableSharedFlow<String>()
+    val error = _error.asSharedFlow()
 
     private val _convertButtonClicked = mutableStateOf(true)
     val convertButtonClicked = _convertButtonClicked
@@ -89,13 +94,19 @@ class ConvertViewModel(
     }
 
     fun onConvertCurrencyButtonClick() {
-        viewModelScope.launch {
-            _convertedAmount.value =
-                convertCurrency.convertCurrency(
-                    _fromSelectedCurrencyCode.value,
-                    _toSelectedCurrencyCode.value,
-                    _inputAmount.value.toDouble()
-                ).data.conversion_result.toString()
+        if (_convertedAmount.value.isNotEmpty()) {
+            viewModelScope.launch {
+                _convertedAmount.value =
+                    (((convertCurrency.convertCurrency(
+                        _fromSelectedCurrencyCode.value,
+                        _toSelectedCurrencyCode.value,
+                        _inputAmount.value.toDouble()
+                    ).data.conversion_result * 100).roundToInt()) / 100f).toString()
+            }
+        } else {
+            viewModelScope.launch {
+                _error.emit("Enter valid Number")
+            }
         }
     }
 

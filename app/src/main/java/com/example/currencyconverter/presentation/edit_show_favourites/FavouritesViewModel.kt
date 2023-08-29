@@ -1,7 +1,6 @@
 package com.example.currencyconverter.presentation.edit_show_favourites
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.currencyconverter.domain.model.Currency
 import com.example.currencyconverter.domain.use_cases.AddFavouriteCurrencyUseCase
@@ -11,7 +10,8 @@ import com.example.currencyconverter.domain.use_cases.GetFavouriteCurrenciesCode
 import com.example.currencyconverter.domain.use_cases.GetFavouriteCurrenciesRatesUseCase
 import com.example.currencyconverter.domain.use_cases.GetFavouriteCurrenciesUseCase
 import com.example.currencyconverter.presentation.BaseViewModel
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class FavouritesViewModel(
@@ -20,9 +20,8 @@ class FavouritesViewModel(
     private val getFavouriteCurrenciesCodes: GetFavouriteCurrenciesCodesUseCase = GetFavouriteCurrenciesCodesUseCase(),
     private val getFavouriteCurrenciesRates: GetFavouriteCurrenciesRatesUseCase = GetFavouriteCurrenciesRatesUseCase(),
     private val getFavouriteCurrencies: GetFavouriteCurrenciesUseCase = GetFavouriteCurrenciesUseCase(),
-    private val deleteCurrency: DeleteFavouriteCurrencyUseCase = DeleteFavouriteCurrencyUseCase()
-) : ViewModel() {
-
+    private val deleteCurrency: DeleteFavouriteCurrencyUseCase = DeleteFavouriteCurrencyUseCase(),
+) : BaseViewModel() {
 
     private val _favouritesListRates =
         mutableStateOf<List<Double>>(emptyList())
@@ -38,16 +37,21 @@ class FavouritesViewModel(
     private val _dialogVisibility = mutableStateOf(false)
     val dialogVisibility = _dialogVisibility
 
+    private val _isLoading = MutableStateFlow(false)
+    val isLoading = _isLoading.asStateFlow()
 
-    init{
+    init {
         updateFavouritesList()
     }
-    private fun updateFavouritesList() {
-        viewModelScope.launch(Dispatchers.IO) {
+
+    fun updateFavouritesList(code: String = "EGP") {
+        viewModelScope.launch(handler) {
+            _isLoading.value = true
             val list = getFavouriteCurrenciesCodes.getSelectedCurrencies()
             _favouritesListRates.value =
-                getFavouriteCurrenciesRates.getFavouriteCurrenciesRates("EGP", list).data
+                (getFavouriteCurrenciesRates.getFavouriteCurrenciesRates(code, list).data)
             _favouritesList.value = getFavouriteCurrencies.getAllCurrencies()
+            _isLoading.value = false
         }
     }
 
@@ -66,11 +70,9 @@ class FavouritesViewModel(
     }
 
     fun onItemSelect(code: String, name: String, flag: String) {
-        if(isItemSelected(code)) {
+        if (isItemSelected(code)) {
             deleteCurrency.deleteCurrency(code)
-        }
-        else
-        {
+        } else {
             addFavouriteCurrency.addCurrency(Currency(code = code, name = name, flag = flag))
         }
         updateFavouritesList()
@@ -79,6 +81,4 @@ class FavouritesViewModel(
     fun isItemSelected(code: String): Boolean {
         return findFavouriteCurrency.findCurrency(code)
     }
-
-
 }

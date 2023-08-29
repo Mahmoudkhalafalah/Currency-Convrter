@@ -8,6 +8,6 @@ data class Currency(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
     val code: String,
-    val flag : String,
-    val name : String
+    val flag: String,
+    val name: String,
 )

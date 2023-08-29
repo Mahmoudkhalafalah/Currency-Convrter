@@ -1,4 +1,4 @@
-package com.example.currencyconverter.presentation.upperUi
+package com.example.currencyconverter.presentation.upperui
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -125,8 +125,6 @@ fun Compare(
 
             }
             Spacer(modifier = Modifier.width(10.dp))
-
-
             Column(
                 verticalArrangement = Arrangement.SpaceBetween,
                 horizontalAlignment = Alignment.Start,
@@ -136,7 +134,6 @@ fun Compare(
                     text = "Targeted Currency",
                     modifier = Modifier.padding(vertical = 16.dp)
                 )
-
                 DropDownMenu(
                     currenciesList = currenciesList,
                     isExpanded = isSecondTargetMenuCompareExpanded,
@@ -165,8 +162,6 @@ fun Compare(
             horizontalArrangement = Arrangement.SpaceAround,
             modifier = Modifier.fillMaxWidth()
         ) {
-
-
             Button(
                 onClick = {
                     onCompareButtonClick()
@@ -181,5 +176,4 @@ fun Compare(
             }
         }
     }
-
 }

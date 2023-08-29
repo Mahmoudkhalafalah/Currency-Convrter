@@ -12,4 +12,5 @@ class ConvertCurrencyUseCase(private val repository: Repository = Repository()) 
     ): PairConversionResponseModel {
         return repository.getExchangeAmount(base, target, amount)
     }
+
 }

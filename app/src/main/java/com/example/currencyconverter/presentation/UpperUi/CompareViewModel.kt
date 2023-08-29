@@ -1,15 +1,21 @@
-package com.example.currencyconverter.presentation.upperUi
+package com.example.currencyconverter.presentation.upperui
 
 import androidx.compose.runtime.mutableStateOf
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.currencyconverter.domain.use_cases.CompareCurrenciesUseCase
+import com.example.currencyconverter.presentation.BaseViewModel
+import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 class CompareViewModel(
-    private val compareCurrencies: CompareCurrenciesUseCase = CompareCurrenciesUseCase()
+    private val compareCurrencies: CompareCurrenciesUseCase = CompareCurrenciesUseCase(),
 ) :
-    ViewModel() {
+    BaseViewModel() {
+
+    private val _error = MutableSharedFlow<String>()
+    val error = _error.asSharedFlow()
 
     private val _fromSelectedCurrencyFlag = mutableStateOf("https://flagsapi.com/EG/flat/64.png")
     val fromSelectedCurrencyFlag = _fromSelectedCurrencyFlag
@@ -74,13 +80,13 @@ class CompareViewModel(
     fun onFromItemSelected(code: String, flag: String) {
         _fromSelectedCurrencyCode.value = code
         _fromSelectedCurrencyFlag.value = flag
-        _isFromMenuExpanded.value=false
+        _isFromMenuExpanded.value = false
     }
 
     fun onFirstTargetItemSelected(code: String, flag: String) {
         _firstTargetSelectedCurrencyCode.value = code
         _firstTargetSelectedCurrencyFlag.value = flag
-        _isFirstTargetMenuExpanded.value=false
+        _isFirstTargetMenuExpanded.value = false
     }
 
     fun onSecondTargetItemSelected(code: String, flag: String) {
@@ -90,10 +96,23 @@ class CompareViewModel(
     }
 
     fun onCompareButtonClick() {
-        viewModelScope.launch {
-            val data = compareCurrencies.getCurrenciesComparison(_fromSelectedCurrencyCode.value,_firstTargetSelectedCurrencyCode.value,_secondTargetSelectedCurrencyCode.value,_inputAmount.value.toDouble()).data
-            _firstTargetConvertedAmount.value=data.firstTargetCurrency.conversion_result.toString()
-            _secondTargetConvertedAmount.value=data.secondTargetCurrency.conversion_result.toString()
+        if (_inputAmount.value.isNotEmpty()) {
+            viewModelScope.launch(handler) {
+                val data = compareCurrencies.getCurrenciesComparison(
+                    _fromSelectedCurrencyCode.value,
+                    _firstTargetSelectedCurrencyCode.value,
+                    _secondTargetSelectedCurrencyCode.value,
+                    _inputAmount.value.toDouble()
+                ).data
+                _firstTargetConvertedAmount.value =
+                    (((data.firstTargetCurrency.conversion_result * 100).roundToInt()) / 100f).toString()
+                _secondTargetConvertedAmount.value =
+                    (((data.secondTargetCurrency.conversion_result * 100).roundToInt()) / 100f).toString()
+            }
+        } else {
+            viewModelScope.launch {
+                _error.emit("Enter valid Number")
+            }
         }
     }
 }
