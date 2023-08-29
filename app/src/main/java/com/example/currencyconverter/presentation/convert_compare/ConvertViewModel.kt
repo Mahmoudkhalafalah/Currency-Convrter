@@ -7,7 +7,9 @@ import com.example.currencyconverter.domain.use_cases.ConvertCurrencyUseCase
 import com.example.currencyconverter.domain.use_cases.GetAllCurrenciesUseCase
 import com.example.currencyconverter.presentation.BaseViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -19,6 +21,9 @@ class ConvertViewModel(
 
     private val _error = MutableSharedFlow<String>()
     val error = _error.asSharedFlow()
+
+    private val _loading = MutableStateFlow(false)
+    val loading = _loading.asStateFlow()
 
     private val _convertButtonClicked = mutableStateOf(true)
     val convertButtonClicked = _convertButtonClicked
@@ -97,12 +102,14 @@ class ConvertViewModel(
     fun onConvertCurrencyButtonClick() {
         if (_inputAmount.value.isNotEmpty()) {
             viewModelScope.launch {
+                _loading.value = true
                 _convertedAmount.value =
                     (((convertCurrency.convertCurrency(
                         _fromSelectedCurrencyCode.value,
                         _toSelectedCurrencyCode.value,
                         _inputAmount.value.toDouble()
                     ).data.conversion_result * 100).roundToInt()) / 100f).toString()
+                _loading.value=false
             }
         } else {
             viewModelScope.launch {

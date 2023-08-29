@@ -203,7 +203,9 @@ class MainActivity : AppCompatActivity() {
                                                 onFirstTargetDropDownCompareIconClick = { compareViewModel.onFirstTargetDropDownMenuIconClick() },
                                                 onSecondTargetDropDownCompareIconClick = { compareViewModel.onSecondTargetDropDownMenuIconClick() },
                                                 onCompareDropDownMenusDismissRequest = { compareViewModel.onDropDownMenuDismissRequest() },
-                                                onCompareButtonClick = { compareViewModel.onCompareButtonClick() }
+                                                onCompareButtonClick = { compareViewModel.onCompareButtonClick() },
+                                                isConvertingLoading = convertViewModel.loading.collectAsState().value,
+                                                isComparingLoading = compareViewModel.loading.collectAsState().value
                                             )
                                         }
                                         item {

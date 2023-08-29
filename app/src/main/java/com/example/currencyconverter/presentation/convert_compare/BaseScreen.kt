@@ -220,6 +220,8 @@ fun Main(
     secondTarget: String,
     onCompareInputTextChange: (String) -> Unit,
     onCompareButtonClick: () -> Unit,
+    isConvertingLoading : Boolean,
+    isComparingLoading : Boolean
 ) {
     Column(modifier = Modifier.background(Color.White)) {
         Box(
@@ -260,7 +262,9 @@ fun Main(
                             onFromCompareItemSelected = onFromCompareItemSelected,
                             onCompareInputTextChange = onCompareInputTextChange,
                             secondTarget = secondTarget,
-                            onCompareButtonClick = { onCompareButtonClick() })
+                            onCompareButtonClick = { onCompareButtonClick() },
+                            isComparingLoading = isComparingLoading
+                        )
                     }
                     if (convertToggleButtonClicked) {
                         ConvertCard(currenciesList = currenciesList,
@@ -286,7 +290,9 @@ fun Main(
                             },
                             amount = inputConvertAmount,
                             convertedAmount = convertedAmount,
-                            onInputTextChange = { onConvertInputTextChange(it) })
+                            onInputTextChange = { onConvertInputTextChange(it) },
+                            isConvertingLoading = isConvertingLoading
+                        )
                     }
                 },
                 transitionSpec = {

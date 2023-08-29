@@ -5,7 +5,9 @@ import androidx.lifecycle.viewModelScope
 import com.example.currencyconverter.domain.use_cases.CompareCurrenciesUseCase
 import com.example.currencyconverter.presentation.BaseViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
+import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asSharedFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import kotlin.math.roundToInt
 
@@ -16,6 +18,9 @@ class CompareViewModel(
 
     private val _error = MutableSharedFlow<String>()
     val error = _error.asSharedFlow()
+
+    private val _loading = MutableStateFlow(false)
+    val loading = _loading.asStateFlow()
 
     private val _fromSelectedCurrencyFlag = mutableStateOf("https://flagsapi.com/EG/flat/64.png")
     val fromSelectedCurrencyFlag = _fromSelectedCurrencyFlag
@@ -98,6 +103,7 @@ class CompareViewModel(
     fun onCompareButtonClick() {
         if (_inputAmount.value.isNotEmpty()) {
             viewModelScope.launch(handler) {
+                _loading.value = true
                 val data = compareCurrencies.getCurrenciesComparison(
                     _fromSelectedCurrencyCode.value,
                     _firstTargetSelectedCurrencyCode.value,
@@ -108,6 +114,7 @@ class CompareViewModel(
                     (((data.firstTargetCurrency.conversion_result * 100).roundToInt()) / 100f).toString()
                 _secondTargetConvertedAmount.value =
                     (((data.secondTargetCurrency.conversion_result * 100).roundToInt()) / 100f).toString()
+                _loading.value = false
             }
         } else {
             viewModelScope.launch {

@@ -14,4 +14,5 @@
     <string name="targeted_currency">العملة</string>
     <string name="to">إلى</string>
     <string name="currency_converter">محول العملة</string>
+    <string name="there_is_no_favourites">لا يوجد عملات مفضلة</string>
 </resources>

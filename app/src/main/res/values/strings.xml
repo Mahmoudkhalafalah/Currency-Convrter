@@ -12,4 +12,5 @@
     <string name="targeted_currency">Targeted Currency</string>
     <string name="to">To</string>
     <string name="currency_converter">Currency Converter</string>
+    <string name="there_is_no_favourites">There is No Favourites</string>
 </resources>

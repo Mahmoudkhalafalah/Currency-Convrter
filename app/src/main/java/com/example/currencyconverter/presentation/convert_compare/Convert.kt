@@ -1,5 +1,6 @@
 package com.example.currencyconverter.presentation.convert_compare
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -7,6 +8,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -14,11 +16,17 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.currencyconverter.R
 import com.example.currencyconverter.data.data_source.model.currencies.Data
 import com.example.currencyconverter.presentation.commoncomponents.DropDownMenu
@@ -43,8 +51,11 @@ fun ConvertCard(
     amount: String,
     convertedAmount: String,
     onInputTextChange: (String) -> Unit,
-
-    ) {
+    isConvertingLoading: Boolean,
+) {
+    val composition by rememberLottieComposition(
+        LottieCompositionSpec.RawRes(R.raw.waiting)
+    )
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -132,6 +143,26 @@ fun ConvertCard(
             }
         }
         Spacer(modifier = Modifier.height(32.dp))
+        AnimatedVisibility(visible = isConvertingLoading) {
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                val progress by animateLottieCompositionAsState(
+                    composition,
+                    iterations = LottieConstants.IterateForever,
+                    isPlaying = true,
+                    speed = 1f,
+                    restartOnPlay = true
+                )
+                LottieAnimation(
+                    composition,
+                    progress,
+                    modifier = Modifier.size(50.dp)
+                )
+            }
+        }
         Row(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceAround,
@@ -142,7 +173,8 @@ fun ConvertCard(
                     .fillMaxWidth()
                     .height(48.dp),
                 shape = RoundedCornerShape(size = 20.dp),
-                colors = ButtonDefaults.buttonColors(Color(0xFF363636))
+                colors = ButtonDefaults.buttonColors(Color(0xFF363636)),
+                enabled = isConvertingLoading.not()
             )
             {
                 PoppinsFontText(text = stringResource(R.string.convert), color = Color.White)

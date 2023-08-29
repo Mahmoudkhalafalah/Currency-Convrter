@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -22,6 +23,7 @@ import androidx.compose.material3.ListItemDefaults
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -37,9 +39,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import com.airbnb.lottie.compose.LottieAnimation
+import com.airbnb.lottie.compose.LottieCompositionSpec
+import com.airbnb.lottie.compose.LottieConstants
+import com.airbnb.lottie.compose.animateLottieCompositionAsState
+import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.currencyconverter.R
 import com.example.currencyconverter.data.data_source.model.currencies.Data
 import com.example.currencyconverter.domain.model.Currency
+import com.example.currencyconverter.presentation.commoncomponents.PoppinsFontText
 import kotlin.math.roundToInt
 
 @Composable
@@ -54,6 +62,7 @@ fun FavouritesList(
     onSheetDismissRequest: () -> Unit,
     isItemSelected: (String) -> Boolean,
 ) {
+
     Column(modifier = Modifier.padding(horizontal = 32.dp)) {
         Spacer(modifier = Modifier.height(32.dp))
         Divider(
@@ -121,7 +130,6 @@ fun FavouritesList(
         FavouriteCurrenciesSelectionDisplay(
             currenciesList = currenciesList,
             onCloseIconClick = { onCloseIconClick() },
-
             onItemSelection = { code, name, flag -> onItemSelection(code, name, flag) },
             onSheetDismissRequest = { onSheetDismissRequest() },
             isItemSelected = { isItemSelected(it) }
@@ -134,6 +142,9 @@ fun FavouriteCurrenciesListDisplay(
     favouriteCurrenciesList: List<Currency>,
     favouriteListRates: List<Double>,
 ) {
+    val composition by rememberLottieComposition(
+        LottieCompositionSpec.RawRes(R.raw.empty)
+    )
     var iterator = 0
     Column(modifier = Modifier.background(Color.White)) {
         favouriteCurrenciesList.forEach {
@@ -191,6 +202,28 @@ fun FavouriteCurrenciesListDisplay(
                     .alpha(0.3f),
                 color = Color(0xFFB9C1D9)
             )
+        }
+        if (favouriteCurrenciesList.isEmpty()) {
+            Column(
+                modifier = Modifier.fillMaxHeight(),
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                PoppinsFontText(text = stringResource(R.string.there_is_no_favourites))
+
+                val progress by animateLottieCompositionAsState(
+                    composition,
+                    iterations = LottieConstants.IterateForever,
+                    isPlaying = true,
+                    speed = 1f,
+                    restartOnPlay = true
+                )
+                LottieAnimation(
+                    composition,
+                    progress,
+                    modifier = Modifier.size(400.dp)
+                )
+            }
         }
     }
 }
