@@ -89,6 +89,5 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-livedata-ktx:2.6.1")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
 
-    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.27.1")
+    implementation("com.google.accompanist:accompanist-swiperefresh:0.27.0")
 }

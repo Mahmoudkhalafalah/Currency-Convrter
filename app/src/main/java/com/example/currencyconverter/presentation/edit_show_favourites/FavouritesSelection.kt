@@ -7,9 +7,11 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
@@ -31,6 +33,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
@@ -39,6 +42,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import coil.compose.AsyncImage
 import com.example.currencyconverter.R
 import com.example.currencyconverter.data.data_source.model.currencies.Data
 import com.example.currencyconverter.presentation.commoncomponents.PoppinsFontText
@@ -137,14 +141,19 @@ fun FavouritesSelectionColumn(
                         )
                     },
                     leadingContent = {
-                        Image(
+                        AsyncImage(model = "https://flagcdn.com/w80/ua.png", contentDescription = "", modifier = Modifier
+                            .padding(end = 8.dp)
+                            .size(48.dp)
+                            .clip(CircleShape),
+                            contentScale = ContentScale.FillBounds)
+                        /*Image(
                             painter = painterResource(id = R.drawable.united_states),
                             contentDescription = it.code,
                             modifier = Modifier
                                 .padding(end = 8.dp)
                                 .width(44.dp)
                                 .height(44.dp)
-                        )
+                        )*/
                     },
                     trailingContent = {
                         IconButton(onClick = { onItemSelection(it.code, it.name, it.flagUrl) }) {

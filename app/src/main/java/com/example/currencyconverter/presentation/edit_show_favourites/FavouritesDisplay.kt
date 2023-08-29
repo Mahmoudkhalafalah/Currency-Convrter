@@ -163,9 +163,9 @@ fun FavouriteCurrenciesListDisplay(
                     AsyncImage(
                         model = it.flag, contentDescription = it.code, modifier = Modifier
                             .padding(end = 8.dp)
-                            .size(48.dp)
+                            .size(48 .dp)
                             .clip(CircleShape),
-                        contentScale = ContentScale.FillBounds
+                        contentScale = ContentScale.FillHeight
                     )
                 },
                 trailingContent = {
