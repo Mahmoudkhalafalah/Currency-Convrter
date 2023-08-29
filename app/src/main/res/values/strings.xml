@@ -3,4 +3,13 @@
     <string name="my_portfolio">My Portfolio</string>
     <string name="add_to_favourites">Add to Favourites</string>
     <string name="live_exchange_rates">live exchange rates</string>
+    <string name="my_favourites">My Favourites</string>
+    <string name="check_live_foreign_currency_exchange_rates">Check live foreign currency exchange rates</string>
+    <string name="convert">Convert</string>
+    <string name="compare">Compare</string>
+    <string name="amount">Amount</string>
+    <string name="from">From</string>
+    <string name="targeted_currency">Targeted Currency</string>
+    <string name="to">To</string>
+    <string name="currency_converter">Currency Converter</string>
 </resources>

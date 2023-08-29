@@ -17,7 +17,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.currencyconverter.R
 import com.example.currencyconverter.data.data_source.model.currencies.Data
 import com.example.currencyconverter.presentation.commoncomponents.DropDownMenu
 import com.example.currencyconverter.presentation.commoncomponents.InputTextField
@@ -65,7 +67,7 @@ fun Compare(
                 modifier = Modifier.weight(1f)
             ) {
                 PoppinsFontText(
-                    text = "Amount",
+                    text = stringResource(R.string.amount),
                     modifier = Modifier.padding(bottom = 16.dp)
                 )
                 InputTextField(
@@ -79,7 +81,7 @@ fun Compare(
                 modifier = Modifier.weight(1f)
             ) {
 
-                PoppinsFontText(text = "From")
+                PoppinsFontText(text = stringResource(R.string.from))
                 Spacer(modifier = Modifier.height(16.dp))
                 DropDownMenu(
                     currenciesList = currenciesList,
@@ -104,7 +106,7 @@ fun Compare(
             ) {
 
                 PoppinsFontText(
-                    text = "Targeted Currency",
+                    text = stringResource(R.string.targeted_currency),
                     modifier = Modifier.padding(vertical = 16.dp)
                 )
                 DropDownMenu(
@@ -131,7 +133,7 @@ fun Compare(
                 modifier = Modifier.weight(1f)
             ) {
                 PoppinsFontText(
-                    text = "Targeted Currency",
+                    text = stringResource(R.string.targeted_currency),
                     modifier = Modifier.padding(vertical = 16.dp)
                 )
                 DropDownMenu(
@@ -172,7 +174,7 @@ fun Compare(
                 colors = ButtonDefaults.buttonColors(Color(0xFF363636))
             )
             {
-                PoppinsFontText(text = "Compare", color = Color.White)
+                PoppinsFontText(text = stringResource(R.string.compare), color = Color.White)
             }
         }
     }

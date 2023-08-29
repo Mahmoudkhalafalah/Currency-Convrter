@@ -1,10 +1,7 @@
-@file:OptIn(ExperimentalAnimationApi::class)
-
 package com.example.currencyconverter.presentation.upperui
 
 
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.togetherWith
@@ -29,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
@@ -38,6 +36,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.example.currencyconverter.R
 import com.example.currencyconverter.data.data_source.model.currencies.Data
+import com.example.currencyconverter.presentation.commoncomponents.PoppinsFontText
 
 @Composable
 fun Header(
@@ -45,6 +44,7 @@ fun Header(
     onCompareToggleButtonClick: () -> Unit,
     convertButtonClicked: Boolean,
     onConvertToggleButtonClick: () -> Unit,
+    onLanguageButtonClick: () -> Unit,
 ) {
     Box(
         modifier = Modifier
@@ -66,22 +66,29 @@ fun Header(
             }) {
                 Image(
                     painter = painterResource(id = R.drawable.mainimage),
-                    contentDescription = "null",
+                    contentDescription = "main background",
                     modifier = Modifier
                         .fillMaxSize()
                         .fillMaxHeight()
                 )
                 Image(
                     painter = painterResource(id = R.drawable.concurrencyimage),
-                    contentDescription = "",
+                    contentDescription = "concurrency",
                     modifier = Modifier
                         .align(Alignment.TopStart)
                         .width(200.dp)
                         .height(84.dp)
                         .padding(top = 32.dp, start = 28.dp)
                 )
+                TextButton(
+                    onClick = { onLanguageButtonClick() },
+                    modifier = Modifier
+                        .align(Alignment.TopEnd)
+                ) {
+                    PoppinsFontText(text = "EN|AR", color = Color.White)
+                }
                 Text(
-                    text = "Currency Converter",
+                    text = stringResource(R.string.currency_converter),
                     modifier = Modifier
                         .align(Alignment.Center)
                         .padding(top = 32.dp),
@@ -93,7 +100,7 @@ fun Header(
                     )
                 )
                 Text(
-                    text = "Check live foreign currency exchange rates",
+                    text = stringResource(R.string.check_live_foreign_currency_exchange_rates),
                     modifier = Modifier
                         .align(Alignment.BottomCenter)
                         .padding(bottom = 64.dp),
@@ -135,7 +142,7 @@ fun Header(
                     } else Modifier.background(color = Color(0xFFF8F8F8))
                 ) {
                     Text(
-                        text = "Convert",
+                        text = stringResource(R.string.convert),
                         fontSize = 16.sp,
                         fontWeight = FontWeight(400),
                         fontFamily = FontFamily(Font(R.font.poppins)),
@@ -156,7 +163,7 @@ fun Header(
                 ) {
 
                     Text(
-                        text = "Compare",
+                        text = stringResource(R.string.compare),
                         fontSize = 16.sp,
                         fontWeight = FontWeight(400),
                         fontFamily = FontFamily(Font(R.font.poppins)),

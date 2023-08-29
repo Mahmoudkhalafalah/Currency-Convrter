@@ -5,6 +5,7 @@ import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
@@ -24,7 +25,7 @@ import com.example.currencyconverter.presentation.upperui.Main
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
-class MainActivity : ComponentActivity() {
+class MainActivity : AppCompatActivity() {
     private val favouritesViewModel by viewModels<FavouritesViewModel>()
     private val convertViewModel by viewModels<ConvertViewModel>()
     private val compareViewModel by viewModels<CompareViewModel>()
@@ -64,7 +65,8 @@ class MainActivity : ComponentActivity() {
                             onConvertToggleButtonClick = { convertViewModel.onConvertToggleButtonClick() },
                             onCompareToggleButtonClick = { convertViewModel.onCompareToggleButtonClick() },
                             convertButtonClicked = convertViewModel.convertButtonClicked.value,
-                            compareButtonClicked = convertViewModel.compareButtonClicked.value
+                            compareButtonClicked = convertViewModel.compareButtonClicked.value,
+                            onLanguageButtonClick = {convertViewModel.onLanguageButtonClick()}
                         )
                         SwipeRefresh(
                             state = state,

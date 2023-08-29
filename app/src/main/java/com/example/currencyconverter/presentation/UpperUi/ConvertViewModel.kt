@@ -1,10 +1,16 @@
 package com.example.currencyconverter.presentation.upperui
 
+import android.app.Activity
+import android.content.Context
+import android.content.ContextWrapper
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.mutableStateOf
+import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.viewModelScope
 import com.example.currencyconverter.data.data_source.model.currencies.Data
 import com.example.currencyconverter.domain.use_cases.ConvertCurrencyUseCase
 import com.example.currencyconverter.domain.use_cases.GetAllCurrenciesUseCase
+import com.example.currencyconverter.presentation.AppClass
 import com.example.currencyconverter.presentation.BaseViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -16,6 +22,9 @@ class ConvertViewModel(
     private val convertCurrency: ConvertCurrencyUseCase = ConvertCurrencyUseCase(),
 ) : BaseViewModel() {
 
+    private val language = mutableStateOf("en")
+
+    val context = AppClass.appContext
     private val _error = MutableSharedFlow<String>()
     val error = _error.asSharedFlow()
 
@@ -28,10 +37,10 @@ class ConvertViewModel(
     private val _currenciesList = mutableStateOf<List<Data>>(emptyList())
     val currenciesList = _currenciesList
 
-    private val _fromSelectedCurrencyFlag = mutableStateOf("https://flagsapi.com/EG/flat/64.png")
+    private val _fromSelectedCurrencyFlag = mutableStateOf("https://flagcdn.com/w80/eg.png")
     val fromSelectedCurrencyFlag = _fromSelectedCurrencyFlag
 
-    private val _toSelectedCurrencyFlag = mutableStateOf("https://flagsapi.com/EG/flat/64.png")
+    private val _toSelectedCurrencyFlag = mutableStateOf("https://flagcdn.com/w80/eg.png")
     val toSelectedCurrencyFlag = _toSelectedCurrencyFlag
 
     private val _fromSelectedCurrencyCode = mutableStateOf("EGP")
@@ -94,7 +103,7 @@ class ConvertViewModel(
     }
 
     fun onConvertCurrencyButtonClick() {
-        if (_convertedAmount.value.isNotEmpty()) {
+        if (_inputAmount.value.isNotEmpty()) {
             viewModelScope.launch {
                 _convertedAmount.value =
                     (((convertCurrency.convertCurrency(
@@ -114,4 +123,36 @@ class ConvertViewModel(
         _inputAmount.value = text
     }
 
+    fun onLanguageButtonClick() {
+        when (LocaleListCompat.forLanguageTags(language.value)) {
+            LocaleListCompat.forLanguageTags("en") -> {
+                AppCompatDelegate.setApplicationLocales(
+                    LocaleListCompat.forLanguageTags(
+                        "ar"
+                    )
+                )
+                language.value = "ar"
+            }
+
+            LocaleListCompat.forLanguageTags("ar") -> {
+                AppCompatDelegate.setApplicationLocales(
+                    LocaleListCompat.forLanguageTags(
+                        "en"
+                    )
+                )
+                language.value = "en"
+            }
+        }
+        context.findActivity()?.runOnUiThread{
+            AppCompatDelegate.getApplicationLocales()
+        }
+    }
+
+    private fun Context.findActivity(): Activity? = when (this) {
+        is Activity -> this
+        is ContextWrapper -> baseContext.findActivity()
+        else -> null
+
+    }
 }
+

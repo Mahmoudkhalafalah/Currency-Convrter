@@ -35,6 +35,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -105,7 +106,7 @@ fun FavouritesSelectionColumn(
     ) {
         Spacer(modifier = Modifier.height(32.dp))
         PoppinsFontText(
-            text = "My Favourites",
+            text = stringResource(R.string.my_favourites),
             font = 18,
             modifier = Modifier.padding(start = 16.dp)
         )

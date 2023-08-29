@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+    <string name="app_name">تحويل العملة</string>
+    <string name="my_portfolio">قائمتي</string>
+    <string name="add_to_favourites">إضافة إلى المفضلة</string>
+    <string name="live_exchange_rates">أسعار الصرف المباشر</string>
+    <string name="my_favourites">My Favourites</string>
+    <string name="check_live_foreign_currency_exchange_rates">تابع أسعار صرف العملات الاجنبية</string>
+    <string name="convert">تحويل</string>
+    <string name="compare">مقارنة</string>
+    <string name="amount">الكمية</string>
+    <string name="from">من</string>
+    <string name="targeted_currency">العملة</string>
+    <string name="to">إلى</string>
+    <string name="currency_converter">محول العملة</string>
+</resources>
