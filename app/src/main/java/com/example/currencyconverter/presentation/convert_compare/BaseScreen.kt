@@ -1,4 +1,4 @@
-package com.example.currencyconverter.presentation.upperui
+package com.example.currencyconverter.presentation.convert_compare
 
 
 import androidx.compose.animation.AnimatedContent
@@ -235,7 +235,7 @@ fun Main(
                 content = { compareButtonClicked ->
 
                     if (compareButtonClicked) {
-                        Compare(currenciesList = currenciesList,
+                        CompareCard(currenciesList = currenciesList,
                             firstTargetCompareCode = firstTargetCompareCode,
                             isCompareFromMenuExpanded = isCompareFromMenuExpanded,
                             isFirstTargetMenuCompareExpanded = isFirstTargetMenuCompareExpanded,
@@ -263,7 +263,7 @@ fun Main(
                             onCompareButtonClick = { onCompareButtonClick() })
                     }
                     if (convertToggleButtonClicked) {
-                        CurrencyCard(currenciesList = currenciesList,
+                        ConvertCard(currenciesList = currenciesList,
                             onConvertButtonClick = { convertButtonClick() },
                             isToExpanded = isConvertToMenuExpanded,
                             toSelectedCurrencyCode = convertToSelectedCurrencyCode,

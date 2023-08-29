@@ -91,4 +91,7 @@ dependencies {
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.6.1")
 
     implementation("com.google.accompanist:accompanist-swiperefresh:0.27.0")
+    implementation("androidx.navigation:navigation-compose:2.7.1")
+    implementation("com.airbnb.android:lottie:6.0.0")
+    implementation("com.airbnb.android:lottie-compose:6.0.0")
 }

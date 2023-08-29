@@ -161,11 +161,11 @@ fun FavouriteCurrenciesListDisplay(
                 },
                 leadingContent = {
                     AsyncImage(
-                        model = it.flag, contentDescription = it.code, modifier = Modifier
+                        model = it.flag, contentDescription = "${it.flag} flag", modifier = Modifier
                             .padding(end = 8.dp)
                             .size(48.dp)
                             .clip(CircleShape),
-                        contentScale = ContentScale.FillHeight
+                        contentScale = ContentScale.FillBounds
                     )
                 },
                 trailingContent = {

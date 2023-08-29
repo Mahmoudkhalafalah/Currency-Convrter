@@ -1,4 +1,4 @@
-package com.example.currencyconverter.presentation.upperui
+package com.example.currencyconverter.presentation.convert_compare
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,7 +26,7 @@ import com.example.currencyconverter.presentation.commoncomponents.InputTextFiel
 import com.example.currencyconverter.presentation.commoncomponents.PoppinsFontText
 
 @Composable
-fun Compare(
+fun CompareCard(
     currenciesList: List<Data>,
     isCompareFromMenuExpanded: Boolean,
     isFirstTargetMenuCompareExpanded: Boolean,

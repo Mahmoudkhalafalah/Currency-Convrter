@@ -10,7 +10,10 @@ import com.example.currencyconverter.domain.use_cases.GetFavouriteCurrenciesCode
 import com.example.currencyconverter.domain.use_cases.GetFavouriteCurrenciesRatesUseCase
 import com.example.currencyconverter.domain.use_cases.GetFavouriteCurrenciesUseCase
 import com.example.currencyconverter.presentation.BaseViewModel
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asSharedFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
@@ -27,6 +30,9 @@ class FavouritesViewModel(
         mutableStateOf<List<Double>>(emptyList())
     val favouritesListRates = _favouritesListRates
 
+    private val _isAppLoaded = MutableSharedFlow<Boolean>()
+    val isAppLoaded = _isAppLoaded.asSharedFlow()
+
     private val _favouritesList =
         mutableStateOf<List<Currency>>(emptyList())
     val favouritesList = _favouritesList
@@ -41,7 +47,10 @@ class FavouritesViewModel(
     val isLoading = _isLoading.asStateFlow()
 
     init {
-        updateFavouritesList()
+        viewModelScope.launch {
+            updateFavouritesList()
+            _isAppLoaded.emit(true)
+        }
     }
 
     fun updateFavouritesList(code: String = "EGP") {

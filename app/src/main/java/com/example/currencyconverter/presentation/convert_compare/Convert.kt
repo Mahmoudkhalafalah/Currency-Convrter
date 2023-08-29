@@ -1,4 +1,4 @@
-package com.example.currencyconverter.presentation.upperui
+package com.example.currencyconverter.presentation.convert_compare
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,9 +25,8 @@ import com.example.currencyconverter.presentation.commoncomponents.DropDownMenu
 import com.example.currencyconverter.presentation.commoncomponents.InputTextField
 import com.example.currencyconverter.presentation.commoncomponents.PoppinsFontText
 
-
 @Composable
-fun CurrencyCard(
+fun ConvertCard(
     currenciesList: List<Data>,
     onConvertButtonClick: () -> Unit,
     isToExpanded: Boolean,
@@ -120,7 +119,10 @@ fun CurrencyCard(
                 horizontalAlignment = Alignment.Start,
                 modifier = Modifier.weight(1f)
             ) {
-                PoppinsFontText(text = stringResource(R.string.amount), modifier = Modifier.padding(bottom = 16.dp))
+                PoppinsFontText(
+                    text = stringResource(R.string.amount),
+                    modifier = Modifier.padding(bottom = 16.dp)
+                )
 
                 InputTextField(
                     text = convertedAmount,

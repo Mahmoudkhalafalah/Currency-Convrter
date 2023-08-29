@@ -1,4 +1,4 @@
-package com.example.currencyconverter.presentation.upperui
+package com.example.currencyconverter.presentation.convert_compare
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope

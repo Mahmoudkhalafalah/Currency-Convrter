@@ -1,6 +1,5 @@
 package com.example.currencyconverter.presentation.edit_show_favourites
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -8,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -34,7 +32,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.TextStyle
@@ -89,8 +86,6 @@ fun FavouriteCurrenciesSelectionDisplay(
             }
         }
     }
-
-
 }
 
 @Composable
@@ -142,10 +137,13 @@ fun FavouritesSelectionColumn(
                         )
                     },
                     leadingContent = {
-                        AsyncImage(model = it.flagUrl, contentDescription = "", modifier = Modifier
-                            .padding(end = 8.dp)
-                            .size(48.dp)
-                            .clip(CircleShape),
+                        AsyncImage(
+                            model = it.flagUrl,
+                            contentDescription = "${it.flagUrl} flag",
+                            modifier = Modifier
+                                .padding(end = 8.dp)
+                                .size(48.dp)
+                                .clip(CircleShape),
                             contentScale = ContentScale.FillBounds
                         )
 

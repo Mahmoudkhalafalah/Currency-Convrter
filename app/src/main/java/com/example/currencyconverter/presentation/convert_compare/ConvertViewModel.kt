@@ -1,16 +1,10 @@
-package com.example.currencyconverter.presentation.upperui
+package com.example.currencyconverter.presentation.convert_compare
 
-import android.app.Activity
-import android.content.Context
-import android.content.ContextWrapper
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.runtime.mutableStateOf
-import androidx.core.os.LocaleListCompat
 import androidx.lifecycle.viewModelScope
 import com.example.currencyconverter.data.data_source.model.currencies.Data
 import com.example.currencyconverter.domain.use_cases.ConvertCurrencyUseCase
 import com.example.currencyconverter.domain.use_cases.GetAllCurrenciesUseCase
-import com.example.currencyconverter.presentation.AppClass
 import com.example.currencyconverter.presentation.BaseViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.asSharedFlow
@@ -22,9 +16,7 @@ class ConvertViewModel(
     private val convertCurrency: ConvertCurrencyUseCase = ConvertCurrencyUseCase(),
 ) : BaseViewModel() {
 
-    private val language = mutableStateOf("en")
 
-    val context = AppClass.appContext
     private val _error = MutableSharedFlow<String>()
     val error = _error.asSharedFlow()
 
@@ -123,36 +115,6 @@ class ConvertViewModel(
         _inputAmount.value = text
     }
 
-    fun onLanguageButtonClick() {
-        when (LocaleListCompat.forLanguageTags(language.value)) {
-            LocaleListCompat.forLanguageTags("en") -> {
-                AppCompatDelegate.setApplicationLocales(
-                    LocaleListCompat.forLanguageTags(
-                        "ar"
-                    )
-                )
-                language.value = "ar"
-            }
 
-            LocaleListCompat.forLanguageTags("ar") -> {
-                AppCompatDelegate.setApplicationLocales(
-                    LocaleListCompat.forLanguageTags(
-                        "en"
-                    )
-                )
-                language.value = "en"
-            }
-        }
-        context.findActivity()?.runOnUiThread{
-            AppCompatDelegate.getApplicationLocales()
-        }
-    }
-
-    private fun Context.findActivity(): Activity? = when (this) {
-        is Activity -> this
-        is ContextWrapper -> baseContext.findActivity()
-        else -> null
-
-    }
 }
 
