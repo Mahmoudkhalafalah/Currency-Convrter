@@ -141,19 +141,12 @@ fun FavouritesSelectionColumn(
                         )
                     },
                     leadingContent = {
-                        AsyncImage(model = "https://flagcdn.com/w80/ua.png", contentDescription = "", modifier = Modifier
+                        AsyncImage(model = it.flagUrl, contentDescription = "", modifier = Modifier
                             .padding(end = 8.dp)
                             .size(48.dp)
                             .clip(CircleShape),
                             contentScale = ContentScale.FillBounds)
-                        /*Image(
-                            painter = painterResource(id = R.drawable.united_states),
-                            contentDescription = it.code,
-                            modifier = Modifier
-                                .padding(end = 8.dp)
-                                .width(44.dp)
-                                .height(44.dp)
-                        )*/
+
                     },
                     trailingContent = {
                         IconButton(onClick = { onItemSelection(it.code, it.name, it.flagUrl) }) {
