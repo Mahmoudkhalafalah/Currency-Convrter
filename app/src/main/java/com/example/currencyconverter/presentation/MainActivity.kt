@@ -30,13 +30,13 @@ import com.airbnb.lottie.compose.LottieConstants
 import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.currencyconverter.R
-import com.example.currencyconverter.presentation.edit_show_favourites.FavouritesList
-import com.example.currencyconverter.presentation.edit_show_favourites.FavouritesViewModel
-import com.example.currencyconverter.presentation.ui.theme.CurrencyConverterTheme
 import com.example.currencyconverter.presentation.convert_compare.CompareViewModel
 import com.example.currencyconverter.presentation.convert_compare.ConvertViewModel
 import com.example.currencyconverter.presentation.convert_compare.Header
 import com.example.currencyconverter.presentation.convert_compare.Main
+import com.example.currencyconverter.presentation.edit_show_favourites.FavouritesList
+import com.example.currencyconverter.presentation.edit_show_favourites.FavouritesViewModel
+import com.example.currencyconverter.presentation.ui.theme.CurrencyConverterTheme
 import com.google.accompanist.swiperefresh.SwipeRefresh
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 
@@ -71,7 +71,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 LaunchedEffect(key1 = true) {
                     favouritesViewModel.isAppLoaded.collect {
-                        if (it){
+                        if (it) {
                             navController.navigate("mainScreen")
                             Toast.makeText(this@MainActivity, "Welcome Back", Toast.LENGTH_SHORT)
                                 .show()
