@@ -15,4 +15,10 @@
     <string name="to">إلى</string>
     <string name="currency_converter">محول العملة</string>
     <string name="there_is_no_favourites">لا يوجد عملات مفضلة</string>
+    <string name="press_back_again_to_exit_the_app">اضغط مجددا للخروج من التطبيق</string>
+    <string name="no_internet_connection">لا يوجد انترنت</string>
+    <string name="loading">تحميل...</string>
+    <string name="welcome_back">مرحبا بك</string>
+    <string name="en_ar">عربي|انجليزي</string>
+
 </resources>

@@ -87,7 +87,7 @@ fun Header(
                     modifier = Modifier
                         .align(Alignment.TopEnd)
                 ) {
-                    PoppinsFontText(text = "EN|AR", color = Color.White)
+                    PoppinsFontText(text = stringResource(R.string.en_ar), color = Color.White)
                 }
                 Text(
                     text = stringResource(R.string.currency_converter),
@@ -220,8 +220,8 @@ fun Main(
     secondTarget: String,
     onCompareInputTextChange: (String) -> Unit,
     onCompareButtonClick: () -> Unit,
-    isConvertingLoading : Boolean,
-    isComparingLoading : Boolean
+    isConvertingLoading: Boolean,
+    isComparingLoading: Boolean,
 ) {
     Column(modifier = Modifier.background(Color.White)) {
         Box(
@@ -237,7 +237,8 @@ fun Main(
                 content = { compareButtonClicked ->
 
                     if (compareButtonClicked) {
-                        CompareCard(currenciesList = currenciesList,
+                        CompareCard(
+                            currenciesList = currenciesList,
                             firstTargetCompareCode = firstTargetCompareCode,
                             isCompareFromMenuExpanded = isCompareFromMenuExpanded,
                             isFirstTargetMenuCompareExpanded = isFirstTargetMenuCompareExpanded,
@@ -267,7 +268,8 @@ fun Main(
                         )
                     }
                     if (convertToggleButtonClicked) {
-                        ConvertCard(currenciesList = currenciesList,
+                        ConvertCard(
+                            currenciesList = currenciesList,
                             onConvertButtonClick = { convertButtonClick() },
                             isToExpanded = isConvertToMenuExpanded,
                             toSelectedCurrencyCode = convertToSelectedCurrencyCode,

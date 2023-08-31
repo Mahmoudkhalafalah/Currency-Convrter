@@ -6,9 +6,11 @@ import com.example.currencyconverter.data.data_source.model.comparison.Currencie
 import com.example.currencyconverter.data.data_source.model.currencies.SupportedCurrenciesResponseModel
 import com.example.currencyconverter.data.data_source.model.favourites.FavouriteCurrenciesRatesResponseModel
 import com.example.currencyconverter.data.data_source.model.pair_conversion.PairConversionResponseModel
+import com.example.currencyconverter.data.data_source.network.NetworkConnectionInterceptor
 import com.example.currencyconverter.data.data_source.network.NetworkServices
 import com.example.currencyconverter.domain.model.Currency
 import com.example.currencyconverter.presentation.AppClass
+import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -16,7 +18,10 @@ class Repository {
 
     private val context = AppClass.appContext
 
+    val client = OkHttpClient.Builder().addInterceptor(NetworkConnectionInterceptor()).build()
+
     private var retrofit: Retrofit = Retrofit.Builder()
+        .client(client)
         .baseUrl("https://tiresome-part-production.up.railway.app/")
         .addConverterFactory(GsonConverterFactory.create())
         .build()

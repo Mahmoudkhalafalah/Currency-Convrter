@@ -3,6 +3,7 @@ package com.example.currencyconverter.presentation.convert_compare
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
 import com.example.currencyconverter.data.data_source.model.currencies.Data
+import com.example.currencyconverter.data.data_source.network.NoInternetException
 import com.example.currencyconverter.domain.use_cases.ConvertCurrencyUseCase
 import com.example.currencyconverter.domain.use_cases.GetAllCurrenciesUseCase
 import com.example.currencyconverter.presentation.BaseViewModel
@@ -21,6 +22,9 @@ class ConvertViewModel(
 
     private val _error = MutableSharedFlow<String>()
     val error = _error.asSharedFlow()
+
+    private val _isInternetError = MutableSharedFlow<String>()
+    val isInternetError = _isInternetError.asSharedFlow()
 
     private val _loading = MutableStateFlow(false)
     val loading = _loading.asStateFlow()
@@ -59,9 +63,7 @@ class ConvertViewModel(
     val convertedAmount = _convertedAmount
 
     init {
-        viewModelScope.launch {
-            _currenciesList.value = getCurrencies.getAllCurrencies().data
-        }
+        getAllCurrencies()
     }
 
     fun onDropDownMenuDismissRequest() {
@@ -100,16 +102,22 @@ class ConvertViewModel(
     }
 
     fun onConvertCurrencyButtonClick() {
-        if (_inputAmount.value.isNotEmpty()) {
+        if (_inputAmount.value.isNotEmpty() && isValidNumber(_inputAmount.value)) {
             viewModelScope.launch {
                 _loading.value = true
-                _convertedAmount.value =
-                    (((convertCurrency.convertCurrency(
-                        _fromSelectedCurrencyCode.value,
-                        _toSelectedCurrencyCode.value,
-                        _inputAmount.value.toDouble()
-                    ).data.conversion_result * 100).roundToInt()) / 100f).toString()
-                _loading.value=false
+                try {
+                    _convertedAmount.value =
+                        (((convertCurrency.convertCurrency(
+                            _fromSelectedCurrencyCode.value,
+                            _toSelectedCurrencyCode.value,
+                            _inputAmount.value.toDouble()
+                        ).data.conversion_result * 100).roundToInt()) / 100f).toString()
+                } catch (e: NoInternetException) {
+                    viewModelScope.launch {
+                        _isInternetError.emit(e.message ?: "")
+                    }
+                }
+                _loading.value = false
             }
         } else {
             viewModelScope.launch {
@@ -122,6 +130,16 @@ class ConvertViewModel(
         _inputAmount.value = text
     }
 
-
+    fun getAllCurrencies() {
+        viewModelScope.launch {
+            try {
+                _currenciesList.value = getCurrencies.getAllCurrencies().data
+            } catch (e: NoInternetException) {
+                viewModelScope.launch {
+                    _isInternetError.emit(e.message ?: "")
+                }
+            }
+        }
+    }
 }
 

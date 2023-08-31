@@ -57,7 +57,7 @@ fun CompareCard(
     secondTarget: String,
     onCompareInputTextChange: (String) -> Unit,
     onCompareButtonClick: () -> Unit,
-    isComparingLoading : Boolean
+    isComparingLoading: Boolean,
 ) {
     val composition by rememberLottieComposition(
         LottieCompositionSpec.RawRes(R.raw.waiting)

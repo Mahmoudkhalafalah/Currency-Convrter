@@ -10,26 +10,28 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.airbnb.lottie.compose.LottieAnimation
 import com.airbnb.lottie.compose.LottieCompositionSpec
-import com.airbnb.lottie.compose.LottieConstants
-import com.airbnb.lottie.compose.animateLottieCompositionAsState
 import com.airbnb.lottie.compose.rememberLottieComposition
 import com.example.currencyconverter.R
+import com.example.currencyconverter.observeconnectivity.ConnectivityObserver
+import com.example.currencyconverter.observeconnectivity.NetworkConnectivityObserver
+import com.example.currencyconverter.presentation.commoncomponents.Animation
+import com.example.currencyconverter.presentation.commoncomponents.NetworkError
+import com.example.currencyconverter.presentation.commoncomponents.PoppinsFontText
 import com.example.currencyconverter.presentation.convert_compare.CompareViewModel
 import com.example.currencyconverter.presentation.convert_compare.ConvertViewModel
 import com.example.currencyconverter.presentation.convert_compare.Header
@@ -44,13 +46,46 @@ class MainActivity : AppCompatActivity() {
     private val favouritesViewModel by viewModels<FavouritesViewModel>()
     private val convertViewModel by viewModels<ConvertViewModel>()
     private val compareViewModel by viewModels<CompareViewModel>()
-
+    private lateinit var connectivityObserver: ConnectivityObserver
+    private var backPressTime = 0L
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             CurrencyConverterTheme {
                 // A surface container using the 'background' color from the theme
                 val navController = rememberNavController()
+
+                LaunchedEffect(key1 = true) {
+                    convertViewModel.isInternetError.collect {
+                        Toast.makeText(
+                            this@MainActivity,
+                            "No Internet Connection",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
+                }
+                LaunchedEffect(key1 = true) {
+                    compareViewModel.isInternetError.collect {
+                        Toast.makeText(
+                            this@MainActivity,
+                            "No Internet Connection",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
+                }
+                LaunchedEffect(key1 = true) {
+                    favouritesViewModel.isInternetError.collect {
+                        Toast.makeText(
+                            this@MainActivity,
+                            "No Internet Connection",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                    }
+                }
+
                 LaunchedEffect(key1 = true) {
                     favouritesViewModel.trowError.collect {
                         Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT)
@@ -65,7 +100,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 LaunchedEffect(key1 = true) {
                     compareViewModel.error.collect {
-                        Toast.makeText(this@MainActivity, it, Toast.LENGTH_LONG)
+                        Toast.makeText(this@MainActivity, it, Toast.LENGTH_SHORT)
                             .show()
                     }
                 }
@@ -73,7 +108,10 @@ class MainActivity : AppCompatActivity() {
                     favouritesViewModel.isAppLoaded.collect {
                         if (it) {
                             navController.navigate("mainScreen")
-                            Toast.makeText(this@MainActivity, "Welcome Back", Toast.LENGTH_SHORT)
+                            Toast.makeText(
+                                this@MainActivity,
+                                getString(R.string.welcome_back), Toast.LENGTH_SHORT
+                            )
                                 .show()
                         }
                     }
@@ -82,30 +120,27 @@ class MainActivity : AppCompatActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-
                     val isLoading = favouritesViewModel.isLoading.collectAsState().value
                     val state = rememberSwipeRefreshState(isRefreshing = isLoading)
                     val composition by rememberLottieComposition(
                         LottieCompositionSpec.RawRes(R.raw.loading)
                     )
+
+                    connectivityObserver = NetworkConnectivityObserver(applicationContext)
+                    val showDialog = remember {
+                        mutableStateOf(false)
+                    }
+                    val status by connectivityObserver.observe()
+                        .collectAsState(initial = ConnectivityObserver.Status.Unavailable)
+                    connectivityObserver = NetworkConnectivityObserver(applicationContext)
                     NavHost(navController = navController, startDestination = "Splash") {
                         composable("Splash") {
                             Column(
                                 verticalArrangement = Arrangement.Center,
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
-                                val progress by animateLottieCompositionAsState(
-                                    composition,
-                                    iterations = LottieConstants.IterateForever,
-                                    isPlaying = true,
-                                    speed = 1f,
-                                    restartOnPlay = true
-                                )
-                                LottieAnimation(
-                                    composition,
-                                    progress,
-                                    modifier = Modifier.size(200.dp)
-                                )
+                                Animation(composition = composition)
+                                PoppinsFontText(text = getString(R.string.loading))
                             }
 
                         }
@@ -115,19 +150,24 @@ class MainActivity : AppCompatActivity() {
                                     .fillMaxHeight()
                                     .background(Color.White)
                             ) {
+                                showDialog.value = (status.toString() != "Available")
                                 Header(
                                     onConvertToggleButtonClick = { convertViewModel.onConvertToggleButtonClick() },
                                     onCompareToggleButtonClick = { convertViewModel.onCompareToggleButtonClick() },
                                     convertButtonClicked = convertViewModel.convertButtonClicked.value,
                                     compareButtonClicked = convertViewModel.compareButtonClicked.value,
-                                    onLanguageButtonClick = { convertViewModel.onLanguageButtonClick() }
+                                    onLanguageButtonClick = {
+                                        convertViewModel.onLanguageButtonClick()
+                                    }
                                 )
+                                NetworkError(visibility = showDialog.value, status.toString())
                                 SwipeRefresh(
                                     state = state,
                                     onRefresh = {
                                         favouritesViewModel.updateFavouritesList(
                                             convertViewModel.fromSelectedCurrencyCode.value
                                         )
+                                        convertViewModel.getAllCurrencies()
                                     }) {
                                     LazyColumn {
                                         item {
@@ -240,7 +280,21 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    override fun onBackPressed() {
+        if (backPressTime + 2000 > System.currentTimeMillis()) {
+            finishAffinity()
+        } else {
+            Toast.makeText(
+                applicationContext,
+                getString(R.string.press_back_again_to_exit_the_app), Toast.LENGTH_SHORT
+            ).show()
+        }
+        backPressTime = System.currentTimeMillis()
+    }
 }
+
+
 
 
 

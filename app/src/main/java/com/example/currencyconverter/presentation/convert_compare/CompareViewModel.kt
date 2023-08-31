@@ -2,6 +2,7 @@ package com.example.currencyconverter.presentation.convert_compare
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
+import com.example.currencyconverter.data.data_source.network.NoInternetException
 import com.example.currencyconverter.domain.use_cases.CompareCurrenciesUseCase
 import com.example.currencyconverter.presentation.BaseViewModel
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -15,6 +16,9 @@ class CompareViewModel(
     private val compareCurrencies: CompareCurrenciesUseCase = CompareCurrenciesUseCase(),
 ) :
     BaseViewModel() {
+
+    private val _isInternetError = MutableSharedFlow<String>()
+    val isInternetError = _isInternetError.asSharedFlow()
 
     private val _error = MutableSharedFlow<String>()
     val error = _error.asSharedFlow()
@@ -101,19 +105,25 @@ class CompareViewModel(
     }
 
     fun onCompareButtonClick() {
-        if (_inputAmount.value.isNotEmpty()) {
+        if (_inputAmount.value.isNotEmpty() && isValidNumber(_inputAmount.value)) {
             viewModelScope.launch(handler) {
                 _loading.value = true
-                val data = compareCurrencies.getCurrenciesComparison(
-                    _fromSelectedCurrencyCode.value,
-                    _firstTargetSelectedCurrencyCode.value,
-                    _secondTargetSelectedCurrencyCode.value,
-                    _inputAmount.value.toDouble()
-                ).data
-                _firstTargetConvertedAmount.value =
-                    (((data.firstTargetCurrency.conversion_result * 100).roundToInt()) / 100f).toString()
-                _secondTargetConvertedAmount.value =
-                    (((data.secondTargetCurrency.conversion_result * 100).roundToInt()) / 100f).toString()
+                try {
+                    val data = compareCurrencies.getCurrenciesComparison(
+                        _fromSelectedCurrencyCode.value,
+                        _firstTargetSelectedCurrencyCode.value,
+                        _secondTargetSelectedCurrencyCode.value,
+                        _inputAmount.value.toDouble()
+                    ).data
+                    _firstTargetConvertedAmount.value =
+                        (((data.firstTargetCurrency.conversion_result * 100).roundToInt()) / 100f).toString()
+                    _secondTargetConvertedAmount.value =
+                        (((data.secondTargetCurrency.conversion_result * 100).roundToInt()) / 100f).toString()
+                } catch (e: NoInternetException) {
+                    viewModelScope.launch {
+                        _isInternetError.emit(e.message ?: "")
+                    }
+                }
                 _loading.value = false
             }
         } else {

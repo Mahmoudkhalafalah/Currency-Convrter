@@ -46,7 +46,7 @@ open class BaseViewModel : ViewModel() {
 
                 403 -> {
                     viewModelScope.launch {
-                        _throwError.emit("Error")
+                        _throwError.emit("forbidden")
                     }
                 }
 
@@ -89,5 +89,19 @@ open class BaseViewModel : ViewModel() {
         is ContextWrapper -> baseContext.findActivity()
         else -> null
 
+    }
+
+    fun isValidNumber(input: String?): Boolean {
+        return try {
+            input?.toInt() // Try parsing as an integer
+            true
+        } catch (e: NumberFormatException) {
+            try {
+                input?.toDouble() // Try parsing as a double
+                true
+            } catch (e: NumberFormatException) {
+                false
+            }
+        }
     }
 }

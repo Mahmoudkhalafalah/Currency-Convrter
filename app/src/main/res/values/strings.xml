@@ -13,4 +13,9 @@
     <string name="to">To</string>
     <string name="currency_converter">Currency Converter</string>
     <string name="there_is_no_favourites">There is No Favourites</string>
+    <string name="press_back_again_to_exit_the_app">Press back again to exit the app</string>
+    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="loading">Loading...</string>
+    <string name="welcome_back">Welcome</string>
+    <string name="en_ar">EN|AR</string>
 </resources>

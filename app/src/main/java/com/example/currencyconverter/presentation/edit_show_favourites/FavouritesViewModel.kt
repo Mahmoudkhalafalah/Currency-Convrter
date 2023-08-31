@@ -2,6 +2,7 @@ package com.example.currencyconverter.presentation.edit_show_favourites
 
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.viewModelScope
+import com.example.currencyconverter.data.data_source.network.NoInternetException
 import com.example.currencyconverter.domain.model.Currency
 import com.example.currencyconverter.domain.use_cases.AddFavouriteCurrencyUseCase
 import com.example.currencyconverter.domain.use_cases.DeleteFavouriteCurrencyUseCase
@@ -10,6 +11,7 @@ import com.example.currencyconverter.domain.use_cases.GetFavouriteCurrenciesCode
 import com.example.currencyconverter.domain.use_cases.GetFavouriteCurrenciesRatesUseCase
 import com.example.currencyconverter.domain.use_cases.GetFavouriteCurrenciesUseCase
 import com.example.currencyconverter.presentation.BaseViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,9 +35,15 @@ class FavouritesViewModel(
     private val _isAppLoaded = MutableSharedFlow<Boolean>()
     val isAppLoaded = _isAppLoaded.asSharedFlow()
 
+    private val _isInternetError = MutableSharedFlow<String>()
+    val isInternetError = _isInternetError.asSharedFlow()
+
     private val _favouritesList =
         mutableStateOf<List<Currency>>(emptyList())
     val favouritesList = _favouritesList
+
+    private val _favouritesDataList =
+        mutableStateOf<List<Currency>>(emptyList())
 
     private val _currenciesList = mutableStateOf<List<Currency>>(emptyList())
     val currenciesList = _currenciesList
@@ -48,20 +56,33 @@ class FavouritesViewModel(
 
     init {
         viewModelScope.launch {
-            updateFavouritesList()
+            try {
+                updateFavouritesList()
+            } catch (e: NoInternetException) {
+                viewModelScope.launch {
+                    _isInternetError.emit(e.message ?: "")
+                }
+            }
             delay(2000)
             _isAppLoaded.emit(true)
         }
     }
 
     fun updateFavouritesList(code: String = "EGP") {
+
         viewModelScope.launch(handler) {
             _isLoading.value = true
             val list = getFavouriteCurrenciesCodes.getSelectedCurrencies()
-            _favouritesListRates.value =
-                (getFavouriteCurrenciesRates.getFavouriteCurrenciesRates(code, list).data)
-            _favouritesList.value = getFavouriteCurrencies.getAllCurrencies()
-            _isLoading.value = false
+            try {
+                _favouritesListRates.value =
+                    (getFavouriteCurrenciesRates.getFavouriteCurrenciesRates(code, list).data)
+                _favouritesList.value = getFavouriteCurrencies.getAllCurrencies()
+                _isLoading.value = false
+            } catch (e: NoInternetException) {
+                viewModelScope.launch {
+                    _isInternetError.emit(e.message ?: "")
+                }
+            }
         }
     }
 
@@ -71,12 +92,24 @@ class FavouritesViewModel(
 
     fun onSheetDismissRequest() {
         _dialogVisibility.value = false
-        updateFavouritesList()
+        try {
+            updateFavouritesList()
+        } catch (e: NoInternetException) {
+            viewModelScope.launch {
+                _isInternetError.emit(e.message ?: "")
+            }
+        }
     }
 
     fun onCloseIconClick() {
         _dialogVisibility.value = false
-        updateFavouritesList()
+        try {
+            updateFavouritesList()
+        } catch (e: NoInternetException) {
+            viewModelScope.launch {
+                _isInternetError.emit(e.message ?: "")
+            }
+        }
     }
 
     fun onItemSelect(code: String, name: String, flag: String) {
@@ -85,7 +118,15 @@ class FavouritesViewModel(
         } else {
             addFavouriteCurrency.addCurrency(Currency(code = code, name = name, flag = flag))
         }
-        updateFavouritesList()
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                updateFavouritesList()
+            } catch (e: NoInternetException) {
+                viewModelScope.launch {
+                    _isInternetError.emit(e.message ?: "")
+                }
+            }
+        }
     }
 
     fun isItemSelected(code: String): Boolean {
